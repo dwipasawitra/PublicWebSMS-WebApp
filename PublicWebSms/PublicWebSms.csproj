@@ -144,6 +144,7 @@
     <Compile Include="Models\PwsDbContext.cs" />
     <Compile Include="Models\RegisterData.cs" />
     <Compile Include="Models\SMS.cs" />
+    <Compile Include="Models\SMSAPIInput.cs" />
     <Compile Include="Models\SMSUser.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -239,6 +240,8 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
+    <Content Include="Views\Message\Outbox.cshtml" />
+    <Content Include="Views\Message\Compose.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

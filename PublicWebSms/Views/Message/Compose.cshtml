@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Compose";
+}
+
+<h2>Membuat SMS Baru</h2>
+<p>Silahkan isikan nomor tujuan serta pesan yang ingin Anda kirimkan. Ingat! Maksimum panjang pesan adalah 160 karakter.</p>
+<div id="error"></div>
+<form id="smsform" method="post" action="/Message/Send">
+    <table>
+        <tr>
+            <td>Nomor Tujuan</td>
+            <td><input name="DestinationNumber" size="20" value="@ViewBag.NomorTujuan" /><input type="button" value="Ambil dari kontak" /></td>
+        </tr>
+        <tr>
+            <td>Pesan</td>
+            <td><textarea name="Content" id="smsmsg" rows="5" cols="32">@ViewBag.Pesan</textarea></td>
+        </tr>
+        <tr>
+            <td>Panjang karakter</td>
+            <td><input type="text" id="smslen" size="4" readonly="readonly"/></td>
+        </tr>
+        <tr>
+            <td>Penjadwalan Pengiriman</td>
+            <td><input type="checkbox" name="Scheduled" value="true" id="schedulecheck" checked="@ViewBag.IsScheduled"/> Aktifkan Penjadwalan <br />
+
+                <input type="datetime" name="ScheduleTime" id="scheduletime" value="@DateTime.Now.ToString()" />
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" name="Draft" value="false" id="draft" />
+    <input type="submit" value="Kirimkan SMS" />
+    <input type="button" value="Simpan sebagai Draf" id="savedraft" />
+</form>
+
+<script>
+    $("#error").hide();
+    $("#scheduletime").datepicker({ dateFormat: "dd/mm/yy 00:00:00" });
+
+    $("#scheduletime").hide();
+
+    $("#schedulecheck").click(function () {
+        if ($(this).attr("checked")) {
+            $("#scheduletime").fadeIn(500);
+        }
+        else {
+            $("#scheduletime").fadeOut(500);
+        }
+    });
+
+    $("#smsmsg").keyup(function () {
+        var smslen = $("#smsmsg").val().length
+        $("#smslen").val(smslen);
+        if (parseInt(smslen) >= 160) {
+            $("#smslen").css("background-color", "red");
+        } else {
+            $("#smslen").css("background-color", "");
+        }
+
+    });
+
+    $("#smsform").submit(function () {
+        var smslen = $("#smsmsg").val().length;
+        if (smslen >= 160) {
+            $("#error").html("SMS Anda melebihi 160 karakter. Pengiriman tidak dapat dilakukan.")
+            $("#error").hide();
+            $("#error").fadeIn(500);
+            return false;
+        }
+        else {
+            $.post("/Message/Send", $(this).serialize(), function (data) {
+                if (data == "false") {
+                    $("#error").html("Terjadi kesalahan dalam proses pengiriman")
+                    $("#error").hide();
+                    $("#error").fadeIn(500);
+                    return false;
+                }
+                else {
+                    window.location = "/Message/Outbox?success=1";
+                }
+            }, "text");
+        }
+        return false;
+    });
+
+    $("#savedraft").click(function () {
+        $("#draft").val("true");
+        $("#smsform").trigger("submit");
+        $("#draft").val("false");
+    });
+</script>

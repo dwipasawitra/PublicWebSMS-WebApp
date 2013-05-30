@@ -33,5 +33,15 @@ namespace PublicWebSms.Models
         [Required]
         public bool Sent { get; set; }
 
+        // Boolean untuk penanda bahwa pesan ini merupakan draf
+        [Required]
+        public bool Draft { get; set; }
+
+        // Penanda untuk SMS terjadwal
+        [Required]
+        public bool Scheduled { get; set; }
+
+        public DateTime ScheduleTime { get; set; }
+
     }
 }

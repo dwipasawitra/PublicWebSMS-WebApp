@@ -285,10 +285,24 @@ input, textarea { font: .75em  Arial, "Helvetica Neue", Helvetica, sans-serif; }
 
 hr { background:black; border:none; color:black; display:block; height:1px; margin-top: 20px; width:100%;}
 
+/* Wira poenya */
 #error {
     width: 100%;
     padding: 10px;
     background-color: red;
     color: white;
 
+}
+
+#outbox-table td {
+    text-align: center;
+    border: 1px solid black;
+    
+}
+
+#information {
+    width: 100%;
+    padding: 10px;
+    background-color: limegreen;
+    color: white;
 }
