@@ -7,18 +7,11 @@ using System.Web;
 
 namespace PublicWebSms.Models
 {
-    // GroupContact: Menyimpan kontak yang ada pada suatu grup
-    public class GroupContact
+    // Kontak yang dimiliki oleh suatu pengguna
+    public class ContactUser
     {
         [Key]
-        [Required]
-        public int GroupContactId { get; set; }
-
-        [Required]
-        public int GroupId { get; set; }
-
-        [ForeignKey("GroupId")]
-        public virtual Group Group { get; set; }
+        public int ContactUserId { get; set; }
 
         [Required]
         public int ContactId { get; set; }
@@ -26,6 +19,11 @@ namespace PublicWebSms.Models
         [ForeignKey("ContactId")]
         public virtual Contact Contact { get; set; }
 
-       
+        // User yang memiliki kontak ini
+        [Required]
+        public string UserName { get; set; }
+
+        [ForeignKey("UserName")]
+        public virtual User User { get; set; }
     }
 }

@@ -132,14 +132,19 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\ContactUser.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\GroupContact.cs" />
+    <Compile Include="Models\GroupUser.cs" />
+    <Compile Include="Models\LoginData.cs" />
     <Compile Include="Models\PwsAuthorize.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\PwsDbContext.cs" />
+    <Compile Include="Models\RegisterData.cs" />
     <Compile Include="Models\SMS.cs" />
+    <Compile Include="Models\SMSUser.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -231,6 +236,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\RegisterSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

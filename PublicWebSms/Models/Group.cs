@@ -17,11 +17,6 @@ namespace PublicWebSms.Models
         [Required]
         public string GroupName { get; set; }
         
-        // User yang memiliki group ini
-        [Required]
-        public int UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        
     }
 }

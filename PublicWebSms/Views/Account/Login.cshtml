@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<div id="error">
+   Nama login atau kata sandi salah, silahkan periksa kembali. 
+</div>
+
+<form method="post" action="" id="login">
+<p>Silahkan melakukan login melalui form dibawah ini. <a href="/Account/Register">Klik ini</a> untuk melakukan pendaftaran.</p>
+<table>
+    <tr>
+        <td>Nama login</td>
+        <td>@Html.TextBox("LoginName")</td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td>@Html.Password("Password")</td>
+    </tr>
+</table>
+<input type="submit" value="Login"/>
+</form>
+
+<script>
+    $("#error").hide();
+    $("#login").submit(function () {
+        $.post("/Account/Login", $("#login").serialize(), function (data) {
+            if (data == false) {
+                $("#error").hide();
+                $("#error").fadeIn(500);
+                return false;
+            }
+            else {
+                window.location = "/Dashboard";
+            }
+        });
+        return false;
+    });
+</script>

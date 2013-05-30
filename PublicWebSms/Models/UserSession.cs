@@ -55,5 +55,10 @@ namespace PublicWebSms.Models
             
             return null;
         }
+
+        public static void DoLogout()
+        {
+            HttpContext.Current.Session.Abandon();
+        }
 	}
 }

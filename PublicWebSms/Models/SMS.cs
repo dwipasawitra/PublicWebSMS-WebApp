@@ -27,12 +27,7 @@ namespace PublicWebSms.Models
         [MaxLength(160)]
         public string Content { get; set; }
 
-        // User yang memiliki group ini
-        [Required]
-        public int UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+    
 
         // Boolean untuk penanda apakah SMS sudah dibawa ke sistem SMS gateway
         [Required]

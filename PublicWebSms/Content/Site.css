@@ -284,3 +284,11 @@ blockquote { font-family: Georgia, "Times New Roman", Times, sans-serif; font-si
 input, textarea { font: .75em  Arial, "Helvetica Neue", Helvetica, sans-serif; }
 
 hr { background:black; border:none; color:black; display:block; height:1px; margin-top: 20px; width:100%;}
+
+#error {
+    width: 100%;
+    padding: 10px;
+    background-color: red;
+    color: white;
+
+}
