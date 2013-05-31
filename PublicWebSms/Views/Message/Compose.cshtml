@@ -30,9 +30,11 @@
     <input type="hidden" name="Draft" value="false" id="draft" />
     <input type="submit" value="Kirimkan SMS" />
     <input type="button" value="Simpan sebagai Draf" id="savedraft" />
+    <img src="~/Content/images/loading.gif" id="loading" />
 </form>
 
 <script>
+    $("#loading").hide();
     $("#error").hide();
     $("#scheduletime").datepicker({ dateFormat: "dd/mm/yy 00:00:00" });
 
@@ -59,6 +61,7 @@
     });
 
     $("#smsform").submit(function () {
+        $("#loading").show();
         var smslen = $("#smsmsg").val().length;
         if (smslen >= 160) {
             $("#error").html("SMS Anda melebihi 160 karakter. Pengiriman tidak dapat dilakukan.")
@@ -67,7 +70,8 @@
             return false;
         }
         else {
-            $.post("/Message/Send", $(this).serialize(), function (data) {
+            $.post("@Url.Content("~/Message/Send")", $(this).serialize(), function (data) {
+                $("#loading").hide();
                 if (data == "false") {
                     $("#error").html("Terjadi kesalahan dalam proses pengiriman")
                     $("#error").hide();
@@ -75,10 +79,11 @@
                     return false;
                 }
                 else {
-                    window.location = "/Message/Outbox?success=1";
+                    window.location = "@Url.Content("~/Message/Outbox?success=1")";
                 }
             }, "text");
         }
+        
         return false;
     });
 

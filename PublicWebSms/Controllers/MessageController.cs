@@ -16,7 +16,7 @@ namespace PublicWebSms.Controllers
 
         public ActionResult Index()
         {
-            return Redirect("/Message/Outbox");
+            return Redirect("~/Message/Outbox");
         }
 
         public ActionResult Outbox(int success = 0)
@@ -83,7 +83,7 @@ namespace PublicWebSms.Controllers
 
                 if (!Request.IsAjaxRequest())
                 {
-                    return Redirect("/Message/Outbox?sukses=1");
+                    return Redirect("~/Message/Outbox?sukses=1");
                 }
                
             }

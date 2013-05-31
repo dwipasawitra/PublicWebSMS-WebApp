@@ -15,7 +15,7 @@ namespace PublicWebSms.Controllers
 
         public ActionResult Index()
         {
-            return Redirect("/Message");
+            return Redirect("~/Message");
         }
 
     }

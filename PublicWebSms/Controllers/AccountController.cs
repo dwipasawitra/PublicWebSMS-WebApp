@@ -16,7 +16,7 @@ namespace PublicWebSms.Controllers
 
         public ActionResult Index()
         {
-            return Redirect("Login");
+            return Redirect("~/Account/Login");
         }
 
         public ActionResult Login()
@@ -24,7 +24,7 @@ namespace PublicWebSms.Controllers
             // Jika sudah login, tidak usah menampilkan halaman login. Langsung dashboard!
             if (UserSession.IsLogin())
             {
-                return Redirect("/Dashboard");
+                return Redirect("~/Dashboard");
             }
 
             return View();
@@ -42,7 +42,7 @@ namespace PublicWebSms.Controllers
                     berhasil = true;
                     if (!Request.IsAjaxRequest())
                     {
-                        return Redirect("/Dashboard");
+                        return Redirect("~/Dashboard");
                     }
                 }
 
@@ -60,7 +60,7 @@ namespace PublicWebSms.Controllers
         {
             // Lakukan proses logout
             UserSession.DoLogout();
-            return Redirect("/Account/Login");
+            return Redirect("~/Account/Login");
         }
 
         public ActionResult Register()
@@ -76,7 +76,7 @@ namespace PublicWebSms.Controllers
             
             bool berhasil = false;
             
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && registerData.AcceptTerm == true)
             {
                 User newUser = new User { LoginName = registerData.Email, LoginPassword = registerData.Password };
                 db.Users.Add(newUser);
@@ -86,7 +86,7 @@ namespace PublicWebSms.Controllers
 
                 if (!Request.IsAjaxRequest())
                 {
-                    return Redirect("/Account/RegisterSuccess");
+                    return Redirect("~/Account/RegisterSuccess");
                 }
             }
 

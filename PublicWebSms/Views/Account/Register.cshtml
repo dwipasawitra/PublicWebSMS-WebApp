@@ -45,24 +45,26 @@ KETENTUAN LAYANAN PersonalWebSMS
             </td>
         </tr>
     </table>
-    <input type="submit" value="Lakukan Pendaftaran"/>
+    <input type="submit" value="Lakukan Pendaftaran"/><img src="~/Content/images/loading.gif" id="loading" />
 </form>
 
 <script>
     $("#error").hide();
+    $("#loading").hide();
     $("#registerform").submit(function () {
         //alert($("#registerform").serialize());
-
-        $.post("/Account/Register", $("#registerform").serialize(), function (data) {
-            alert(data);
+        $("#loading").show();
+        $.post("@Url.Content("~/Account/Register")", $("#registerform").serialize(), function (data) {
+            $("#loading").hide();
             if (data == false) {
                 $("#error").fadeIn(500);
                 return false;
             }
             else {
-                window.location = "/Account/RegisterSuccess";
+                window.location = "@Url.Content("~/Account/RegisterSuccess")";
             }
         }, "json");
+        
         return false;
     });
 </script>

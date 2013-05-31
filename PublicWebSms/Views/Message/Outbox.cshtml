@@ -29,7 +29,7 @@
                 {
                     <i>Draft</i>
                     <br />
-                    <a href="/Message/Compose/@sms.SmsId">Sunting</a>
+                    <a href="~/Message/Compose/@sms.SmsId">Sunting</a>
                 }
                 else
                 {
@@ -51,6 +51,6 @@
 
 <script>
     $("#newmessage").click(function () {
-        window.location = "/Message/Compose";
+        window.location = "@Url.Content("~/Message/Compose")";
     });
 </script>

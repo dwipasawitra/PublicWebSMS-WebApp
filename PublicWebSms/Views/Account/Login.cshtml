@@ -9,7 +9,7 @@
 </div>
 
 <form method="post" action="" id="login">
-<p>Silahkan melakukan login melalui form dibawah ini. <a href="/Account/Register">Klik ini</a> untuk melakukan pendaftaran.</p>
+<p>Silahkan melakukan login melalui form dibawah ini. <a href="~/Account/Register">Klik ini</a> untuk melakukan pendaftaran.</p>
 <table>
     <tr>
         <td>Nama login</td>
@@ -21,21 +21,28 @@
     </tr>
 </table>
 <input type="submit" value="Login"/>
+<img src="~/Content/images/loading.gif" id="loading" />
 </form>
 
 <script>
     $("#error").hide();
+    $("#loading").hide();
+
     $("#login").submit(function () {
-        $.post("/Account/Login", $("#login").serialize(), function (data) {
+        $("#loading").show();
+        $.post("@Url.Content("~/Account/Login")", $("#login").serialize(), function (data) {
+            $("#loading").hide();
             if (data == false) {
                 $("#error").hide();
                 $("#error").fadeIn(500);
                 return false;
             }
             else {
-                window.location = "/Dashboard";
+                window.location = "@Url.Content("~/Dashboard")";
             }
+            
         });
+        
         return false;
     });
 </script>
