@@ -117,18 +117,22 @@ namespace PublicWebSms.Controllers
             {
                 // Ambil data SMS yang siap kirim
                 // SMS yang siap kirim sementara, atau yang terjadwal saat ini selisih 5 menit (untuk jaga-jaga gituch)
-                DateTime maxTime = DateTime.Now.AddMinutes(5);
                 DateTime minTime = DateTime.Now.AddMinutes(-5);
 
-                var dataSMS = (from sms in db.SMSes where (sms.Sent == false) || (sms.Sent == false && (sms.Scheduled == true && sms.ScheduleTime <= maxTime && sms.ScheduleTime >= minTime)) select sms);
+                var dataSMS = (from sms in db.SMSes where (sms.Sent == false) || (sms.Sent == false && (sms.Scheduled == true && sms.ScheduleTime >= minTime)) select sms );
 
-                // Untuk tiap SMS, tandai sms.Sent menjadi true dan kirimkan dalam bentuk JSON
+                var jsonSMS = from sms in dataSMS.ToList() select new Dictionary<string, string> { { "Dest", sms.DestinationNumber.ToString() }, { "Msg", sms.Content.ToString() } };
+
                 foreach (SMS sms in dataSMS)
                 {
                     sms.Sent = true;
                 }
 
-                return Json(dataSMS.ToList());
+                db.SaveChanges();
+
+                // Untuk tiap SMS, tandai sms.Sent menjadi true dan kirimkan dalam bentuk JSON
+                
+                return Json(jsonSMS, JsonRequestBehavior.AllowGet);
             }
 
             return View();
