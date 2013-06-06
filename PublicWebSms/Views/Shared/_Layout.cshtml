@@ -1,38 +1,61 @@
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
-	<title>Publis Web SMS: @ViewBag.Title</title>
+	<title>@ViewBag.Title - Public Web SMS</title>
+
+    <link rel="stylesheet" href="~/Content/FontStyle.css" />
 	<link rel="stylesheet" href="style.css" />
-    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="~/Content/css/columnal.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <link rel="stylesheet" href="~/Content/themes/base/jquery.ui.datepicker.css" />
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/Scripts/jquery-ui-1.8.20.js")
+
 	<script type="text/javascript" src="~/Content/Script.js"></script>
+
 </head>
 <body>
+<div id="form">
     <div id="header">
 	    <div id="site-header">
-		    <div id="site-title">
+		    <div id="site-title" class="row">
 			    <h1><img src="~/Content/images/pws-logo.png" /><span>Public Web SMS</span></h1>	
 		    </div>
 		    </div>
 	    <div id="site-menu">
-		    <nav>
-			    <span><a href="">Dashboard</a></span>
-			    <span><a href="compose.html">Compose</a></span>
-			    <span><a href="">Draft</a></span>
-			    <span><a href="outbox.html">Outbox</a></span>
-			    <span><a href="">Sent</a></span>
-			    <span><a href="contact.html">Contact</a></span>
-			    <span><a href="">Group</a></span>
-		    </nav>
+            <div class="container">
+		        <nav class="row">
+                @if (PublicWebSms.Models.UserSession.IsLogin())
+                {
+			        <span><a href="@Url.Content("~/Dashboard")">Dashboard</a></span>
+			        <span><a href="@Url.Content("~/Message/Compose")">Compose</a></span>
+			        <span><a href="">Draft</a></span>
+			        <span><a href="@Url.Content("~/Message/Outbox")">Outbox</a></span>
+			        <span><a href="@Url.Content("~/Contact")">Contact</a></span>
+			        <span><a href="@Url.Content("~/Contact/ShowGroup")">Group</a></span>
+                    <span class="right"><a href="@Url.Content("~/Account/Logout")">Logout</a></span>
+                }
+                else
+                {
+                    <span><a href="@Url.Content("~/")">Beranda</a></span>
+                    <span><a href="@Url.Content("~/Home/About")">Tentang</a></span>
+                    <span class="right"><a href="@Url.Content("~/Account/Login")">Login</a></span>
+                }
+
+		        </nav>
+            </div>
 	    </div>
     </div>
-    <div id="header-clear">&nbsp;</div>
-    @RenderBody()
-    <div id="site-footer">
+    <div id="site-main">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </div>
+    <div id="site-footer" class="row">
 	    <span class="copyright left">&copy; 2013 Public Web SMS</span>
 	    <span class="author right">Created by: Ifan Iqbal & Putu Wiramasawara Widya</span>
     </div>
+</div>
 </body>
 </html>

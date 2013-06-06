@@ -1,95 +1,109 @@
 ﻿@{
-    ViewBag.Title = "Compose";
+    ViewBag.Title = "Buat SMS";
 }
 
-<h2>Membuat SMS Baru</h2>
-<p>Silahkan isikan nomor tujuan serta pesan yang ingin Anda kirimkan. Ingat! Maksimum panjang pesan adalah 160 karakter.</p>
-<div id="error"></div>
-<form id="smsform" method="post" action="/Message/Send">
-    <table>
-        <tr>
-            <td>Nomor Tujuan</td>
-            <td><input name="DestinationNumber" size="20" value="@ViewBag.NomorTujuan" /><input type="button" value="Ambil dari kontak" /></td>
-        </tr>
-        <tr>
-            <td>Pesan</td>
-            <td><textarea name="Content" id="smsmsg" rows="5" cols="32">@ViewBag.Pesan</textarea></td>
-        </tr>
-        <tr>
-            <td>Panjang karakter</td>
-            <td><input type="text" id="smslen" size="4" readonly="readonly"/></td>
-        </tr>
-        <tr>
-            <td>Penjadwalan Pengiriman</td>
-            <td><input type="checkbox" name="Scheduled" value="true" id="schedulecheck" checked="@ViewBag.IsScheduled"/> Aktifkan Penjadwalan <br />
+<div class="row">
+    <h2>Buat SMS&nbsp;<img src="~/Content/images/loading.gif" id="loading" class="hide"/></h2>
+</div>
+<div id="error" class="row hide"></div>
+<form id="smsform" method="post" action="@Url.Content("~/Message/Send")">
+<div class="label row">
+    <label for="DestinationNumber">Nomor tujuan</label>
+</div>
+<div class="input-wrapper row">
+    <input name="DestinationNumber" size="20" value="@ViewBag.NomorTujuan" type="text" /> <input type="button" value="Ambil dari kontak" class="submit" style="width: auto !important;"/>
+</div>
+<div class="label row">
+    <label for="Content">Pesan</label>
+</div>
+<div class="input-wrapper row">
+    <textarea id="smsmsg" name="Content" cols="32" rows="5">@ViewBag.Pesan</textarea>
+</div>
+<div class="label row">
+    <label for="smslen">Panjang karakter <input type="text" id="smslen" size="4" readonly="readonly" style="border:none;" value="0" /></label>
+</div>
+<div class="label row">
+    <br />
+    <label>Pengiriman terjadwal</label><br />
+    <input type="checkbox" name="Scheduled" value="true" id="schedulecheck" checked="@ViewBag.IsScheduled"/>
+    <label for="schedulecheck">Aktifkan penjadwalan</label>
+</div>
+<div class="input-wrapper row">
+    <input type="datetime" name="ScheduleTime" id="scheduletime" value="@DateTime.Now.ToString()" />
+</div>
 
-                <input type="datetime" name="ScheduleTime" id="scheduletime" value="@DateTime.Now.ToString()" />
-            </td>
-        </tr>
-    </table>
+<div class="row">
+    <br />
     <input type="hidden" name="Draft" value="false" id="draft" />
-    <input type="submit" value="Kirimkan SMS" />
-    <input type="button" value="Simpan sebagai Draf" id="savedraft" />
-    <img src="~/Content/images/loading.gif" id="loading" />
+    <input type="submit" value="Kirimkan SMS" class="submit" />
+    <input type="button" value="Simpan sebagai Draf" id="savedraft" class="submit" />
+</div>
+
 </form>
 
 <script>
-    $("#loading").hide();
-    $("#error").hide();
-    $("#scheduletime").datepicker({ dateFormat: "dd/mm/yy 00:00:00" });
+    $(document).ready(function () {
+        $("#loading").hide();
+        $("#error").hide();
+        $("#scheduletime").datepicker({ dateFormat: "dd/mm/yy 00:00:00" });
 
-    $("#scheduletime").hide();
+        $("#scheduletime").hide();
+        $("#scheduletimelabel").hide();
 
-    $("#schedulecheck").click(function () {
-        if ($(this).attr("checked")) {
-            $("#scheduletime").fadeIn(500);
-        }
-        else {
-            $("#scheduletime").fadeOut(500);
-        }
-    });
+        $("#schedulecheck").click(function () {
+            if ($(this).attr("checked")) {
+                $("#scheduletime").fadeIn(500);
+            }
+            else {
+                $("#scheduletime").fadeOut(500);
+            }
+        });
 
-    $("#smsmsg").keyup(function () {
-        var smslen = $("#smsmsg").val().length
-        $("#smslen").val(smslen);
-        if (parseInt(smslen) >= 160) {
-            $("#smslen").css("background-color", "red");
-        } else {
-            $("#smslen").css("background-color", "");
-        }
+        $("#smsmsg").keyup(function () {
+            var smslen = $("#smsmsg").val().length
+            $("#smslen").val(smslen);
+            if (parseInt(smslen) > 160) {
+                $("#smsmsg").css("background-color", "#F5FF8C");
+                $("#smslen").css({ "font-weight": "bold", "color": "red" });
+            } else {
+                $("#smsmsg").css("background-color", "");
+                $("#smslen").css({ "font-weight": "normal", "color": "black" });
+            }
 
-    });
+        });
 
-    $("#smsform").submit(function () {
-        $("#loading").show();
-        var smslen = $("#smsmsg").val().length;
-        if (smslen >= 160) {
-            $("#error").html("SMS Anda melebihi 160 karakter. Pengiriman tidak dapat dilakukan.")
-            $("#error").hide();
-            $("#error").fadeIn(500);
-            return false;
-        }
-        else {
-            $.post("@Url.Content("~/Message/Send")", $(this).serialize(), function (data) {
+        $("#smsform").submit(function () {
+            $("#loading").show();
+            var smslen = $("#smsmsg").val().length;
+            if (smslen >= 160) {
+                $("#error").html("SMS Anda melebihi 160 karakter. Pengiriman tidak dapat dilakukan.")
+                $("#error").hide();
+                $("#error").fadeIn(500);
+                return false;
+            }
+            else {
+                $.post("@Url.Content("~/Message/Send")", $(this).serialize(), function (data) {
                 $("#loading").hide();
-                if (data == "false") {
-                    $("#error").html("Terjadi kesalahan dalam proses pengiriman")
-                    $("#error").hide();
-                    $("#error").fadeIn(500);
-                    return false;
+                    if (data == "false") {
+                        $("#error").html("Terjadi kesalahan dalam proses pengiriman")
+                        $("#error").hide();
+                        $("#error").fadeIn(500);
+                        return false;
+                    }
+                    else {
+                        window.location = "@Url.Content("~/Message/Outbox?success=1")";
                 }
-                else {
-                    window.location = "@Url.Content("~/Message/Outbox?success=1")";
-                }
-            }, "text");
-        }
-        
-        return false;
+                }, "text");
+            }
+
+            return false;
+        });
+
+        $("#savedraft").click(function () {
+            $("#draft").val("true");
+            $("#smsform").trigger("submit");
+            $("#draft").val("false");
+        });
     });
 
-    $("#savedraft").click(function () {
-        $("#draft").val("true");
-        $("#smsform").trigger("submit");
-        $("#draft").val("false");
-    });
 </script>

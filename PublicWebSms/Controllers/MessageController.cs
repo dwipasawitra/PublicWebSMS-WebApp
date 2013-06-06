@@ -27,6 +27,7 @@ namespace PublicWebSms.Controllers
 
             var dataSMS = (from smsUser in db.SMSUser where smsUser.UserName == loggedUserName select smsUser.SMS).ToList();
 
+            
             // AJAX Request: Tampilkan data dalam bentuk JSON
             // Web Request: Tampilkan seluruh halaman dalam bentuk tabel
 
@@ -74,7 +75,10 @@ namespace PublicWebSms.Controllers
                 db.SMSes.Add(smsInput);
                 db.SaveChanges();
 
-                SMSUser smsUser = new SMSUser { UserName = UserSession.GetLoggedUserName(), SMSId = smsInput.SmsId };
+                SMSUser smsUser = new SMSUser { 
+                    UserName = UserSession.GetLoggedUserName(), 
+                    SMSId = smsInput.SmsId 
+                };
 
                 db.SMSUser.Add(smsUser);
                 db.SaveChanges();

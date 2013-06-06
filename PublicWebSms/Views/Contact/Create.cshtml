@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Tambah Kontak Baru";
+}
+
+<div class="row">
+    <h2>Tambah Kontak Baru</h2>
+</div>
+<form id="createcontactform" method="post" action="@Url.Content("~/Contact/Create")">
+    <div class="label row">
+        <label for="Nama">Nama</label>
+    </div>
+    <div class="input-wrapper row">
+        <input type="text" name="Nama" id="Nama" class="col_5"/>
+    </div>
+
+    <div class="label row">
+        <label for="Nomor">Nomor</label>
+    </div>
+    <div class="input-wrapper row">
+        <input type="text" name="Nomor" id="Nomor" />
+    </div>
+    <br />
+    <div class="row">
+        <input type="submit" value="Tambah Kontak" class="submit"/>
+    </div>
+</form>

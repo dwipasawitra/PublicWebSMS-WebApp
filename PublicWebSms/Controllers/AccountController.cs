@@ -19,8 +19,9 @@ namespace PublicWebSms.Controllers
             return Redirect("~/Account/Login");
         }
 
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl = "")
         {
+            ViewBag.ReturnUrl = returnUrl;
             // Jika sudah login, tidak usah menampilkan halaman login. Langsung dashboard!
             if (UserSession.IsLogin())
             {
@@ -31,7 +32,7 @@ namespace PublicWebSms.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginData loginData)
+        public ActionResult Login(LoginData loginData, string returnUrl = "")
         {
             bool berhasil = false;
 
@@ -42,6 +43,11 @@ namespace PublicWebSms.Controllers
                     berhasil = true;
                     if (!Request.IsAjaxRequest())
                     {
+                        if(returnUrl != "")
+                        {
+                            return Redirect("~" + returnUrl);
+                        }
+
                         return Redirect("~/Dashboard");
                     }
                 }

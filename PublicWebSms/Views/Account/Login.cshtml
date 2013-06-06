@@ -1,48 +1,60 @@
 ﻿@{
     ViewBag.Title = "Login";
 }
-
-<h2>Login</h2>
-
-<div id="error">
-   Nama login atau kata sandi salah, silahkan periksa kembali. 
+<div class="row">
+    <h2>Login&nbsp;<img src="~/Content/images/loading.gif" id="loading" class="hide" /></h2>
 </div>
 
-<form method="post" action="" id="login">
-<p>Silahkan melakukan login melalui form dibawah ini. <a href="~/Account/Register">Klik ini</a> untuk melakukan pendaftaran.</p>
-<table>
-    <tr>
-        <td>Nama login</td>
-        <td>@Html.TextBox("LoginName")</td>
-    </tr>
-    <tr>
-        <td>Password</td>
-        <td>@Html.Password("Password")</td>
-    </tr>
-</table>
-<input type="submit" value="Login"/>
-<img src="~/Content/images/loading.gif" id="loading" />
+<div id="error" class="row hide">
+   <p>Nama login atau kata sandi salah, silahkan periksa kembali.</p>
+</div>
+<div class="row">
+    <p class="col_5">Belum memiliki akun? <strong><a href="~/Account/Register">Daftar sekarang!</a></strong> Gratis</p>
+</div>
+
+<form method="post" action="@Url.Content("~/Account/Login")" id="login">
+<div class="row label">
+    <label for="LoginName">Nama login</label>
+</div>
+<div class="row input-wrapper">
+    @Html.TextBox("LoginName")
+</div>
+
+<div class="row label">
+    <label for="Password">Kata kunci</label>
+</div>
+<div class="row input-wrapper">
+    @Html.Password("Password")
+</div>
+
+<div class="row">
+    <br />
+    <input type="submit" value="Login" class="submit" />
+    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+</div>
+
 </form>
 
 <script>
-    $("#error").hide();
-    $("#loading").hide();
+    $(document).ready(function () {
+        $("#error").hide();
+        $("#loading").hide();
 
-    $("#login").submit(function () {
-        $("#loading").show();
-        $.post("@Url.Content("~/Account/Login")", $("#login").serialize(), function (data) {
+        $("#login").submit(function () {
+            $("#loading").show();
+            $.post("@Url.Content("~/Account/Login")", $("#login").serialize(), function (data) {
             $("#loading").hide();
-            if (data == false) {
-                $("#error").hide();
-                $("#error").fadeIn(500);
-                return false;
-            }
-            else {
-                window.location = "@Url.Content("~/Dashboard")";
-            }
-            
+                if (data == false) {
+                    $("#error").hide();
+                    $("#error").fadeIn(500);
+                    return false;
+                }
+                else {
+                    window.location = "@if(ViewBag.ReturnUrl == ""){Url.Content("~/Dasboard");} else{@ViewBag.ReturnUrl}";
+                }
+            });
+
+            return false;
         });
-        
-        return false;
     });
 </script>

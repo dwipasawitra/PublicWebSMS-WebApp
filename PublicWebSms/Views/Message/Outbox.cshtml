@@ -4,17 +4,22 @@
     ViewBag.Title = "Outbox";
 }
 
-<h2>Outbox</h2>
+<div class="row">
+    <h2>Outbox</h2>
+</div>
+<div class="row">
+    <input type="button" value="Buat Pesan Baru" id="newmessage" class="submit" />
+</div>
 
-<input type="button" value="Buat Pesan Baru" id="newmessage" />
-<br /><br />
+    <br />
 @if (ViewBag.Success == 1)
 {
     <div id="information">Pesan telah tercatat! Menunggu proses pengiriman dari server SMS Gateway.</div>
 }
-<table width="100%" id="outbox-table">
+<div class="row">
+    <table width="100%" id="outbox-table">
     <tr>
-        <td width="20%">Waktu pengiriman</td>
+        <td width="20%"><strong>Waktu pengiriman</strong></td>
         <td width="20%"><strong>Nomor tujuan</strong></td>
         <td width="70%"><strong>Pesan</strong></td>
         <td width="10%"><strong>Status</strong></td>
@@ -25,7 +30,7 @@
             <td>@sms.TimeStamp</td>
             <td>@sms.DestinationNumber</td>
             <td>@sms.Content</td>
-            <td>@if (@sms.Draft == true)
+            <td class="statussms">@if (@sms.Draft == true)
                 {
                     <i>Draft</i>
                     <br />
@@ -35,22 +40,23 @@
                 {
                     if(@sms.Sent == true)
                     {
-                        <i>Terkirim</i>
+                        <span>Terkirim</span>
                     }
                     else
                     {
-                        <i>Belum diproses</i>
+                        <span>Belum diproses</span>
                     }
                 }
             </td>
         </tr>
     }
 </table>
-<input type="button" value="Buat Pesan Baru" id="newmessage" />
-<br />
+</div>
 
 <script>
-    $("#newmessage").click(function () {
-        window.location = "@Url.Content("~/Message/Compose")";
+    $(document).ready(function () {
+        $("#newmessage").click(function () {
+                window.location = "@Url.Content("~/Message/Compose")";
+        });
     });
 </script>

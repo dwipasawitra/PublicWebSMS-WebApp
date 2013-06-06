@@ -2,50 +2,66 @@
     ViewBag.Title = "Halaman Pendaftaran";
 }
 
-<h2>Halaman Pendaftaran PersonalWebSMS</h2>
+<div class="row">
+    <h2>Register&nbsp;<img src="~/Content/images/loading.gif" id="loading" /></h2>
+</div>
 
-<p>Silahkan melengkapi formulir di bawah ini dan menyetujui segala jenis ketentuan penggunaan layanan PersonalWebSMS agar Anda
-    dapat menggunakan layanan ini. Terima kasih. -- Admin
-</p>
+<div class="row">
+    <p class="col_5">Silahkan melengkapi formulir di bawah ini dan menyetujui segala jenis <strong><a href="#ketentuan">ketentuan</a></strong> penggunaan layanan PublicWebSMS agar Anda dapat menggunakan layanan ini.</p>
+</div>
+<div class="row">
+    <p class="col_5">Terima kasih.<br /><strong>Admin</strong></p>
+</div>
 
-<div id="error">
+
+<div id="error row" style="display:none;">
     Maaf isian kurang lengkap
 </div>
 <form method="post" id="registerform">
-    <table>
-        <tr>
-            <td>Nama Lengkap Anda</td>
-            <td>: <input type="text" name="FullName" placeholder="Ahmad Fathanah"  size="50"/><br />Isilah nama lengkap Anda</td>
-        </tr>
-        <tr>
-            <td>Surel</td>
-            <td>: <input type="text" name="Email" placeholder="ahmadfathana2012@yahoo.com"  size="20"/><br />Alamat surel ini akan digunakan sebagai nama pada saat login</td>
-        </tr>
-        <tr>
-            <td>Kata Sandi</td>
-            <td>: <input type="password" name="Password" placeholder="Password"  size="20"/></td>
-        </tr>
-        <tr>
-            <td>Ulangi Kata Sandi</td>
-            <td>: <input type="password" name="ConfirmPassword" placeholder="Password"  size="20"/></td>
-        </tr>
-        <tr>
-            <td>Ketentuan layanan</td>
-            <td>: 
-                <textarea readonly="readonly" cols="50" rows="10">
-KETENTUAN LAYANAN PersonalWebSMS
-
-1) No SARA!
-2) No Repost!
-3) No Hoax!
-4) No Flame!
-                </textarea>
-                <br />
-                <input type="checkbox" name="AcceptTerm" value="true"/> Saya setuju dengan ketentuan layanan di atas
-            </td>
-        </tr>
-    </table>
-    <input type="submit" value="Lakukan Pendaftaran"/><img src="~/Content/images/loading.gif" id="loading" />
+<div class="label row">
+    <label for="FullName" class="col_5">Nama lengkap</label>
+</div>
+<div class="input-wrapper row">
+    <input type="text" id="FullName" name="FullName" placeholder="Andi Budi Tono"  size="50"/>
+</div>
+<div class="label row">
+    <label for="Email" class="col_5">Surel</label>
+</div>
+<div class="input-wrapper row">
+    <input type="text" id="Email" name="Email" placeholder="ahmadfathana2012@yahoo.com"  size="20"/>
+</div>
+<div class="label row">
+    <label for="Password" class="col_5">Kata kunci</label>
+</div>
+<div class="input-wrapper row">
+    <input type="password" id="Password" name="Password" placeholder="Password"  size="20"/>
+</div>
+<div class="label row">
+    <label for="ConfirmPassword" class="col_5">Konfirmasi kata kunci</label>
+</div>
+<div class="input-wrapper row">
+    <input type="password" id="ConfirmPassword" name="ConfirmPassword" placeholder="Password"  size="20"/>
+</div>
+<div class="label row">
+    <br />
+    <label for="KetentuanLayanan" id="ketentuan" class="col_5"><strong>Ketentuan Layanan</strong></label>
+</div>
+<div class="input-wrapper row">
+    <textarea id="KetentuanLayanan" readonly="readonly" cols="50" rows="5">
+    1) No SARA!
+    2) No Repost!
+    3) No Hoax!
+    4) No Flame!
+    </textarea>
+</div>
+<div class="label row">
+     <input type="checkbox" id="AcceptTerm" name="AcceptTerm" value="true"/><label for="AcceptTerm">Saya setuju dengan ketentuan layanan di atas</label>
+</div>
+<div class="row">
+    <br />
+    <input type="submit" value="Daftar" class="submit"/>
+</div>
+    
 </form>
 
 <script>

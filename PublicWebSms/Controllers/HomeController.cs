@@ -26,12 +26,14 @@ namespace PublicWebSms.Controllers
 
 
             ViewBag.ErrorMessage = errorMessage.ToString();
-            return View();
+            //return View();
+            return Redirect("~/Account/Login");
         }
 
         public ActionResult About()
         {
-            return View();
+            //return View();
+            return Redirect("~/Account/Login");
         }
 
         protected override void Dispose(bool disposing)

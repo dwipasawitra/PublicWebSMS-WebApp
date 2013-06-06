@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Buat Grup Baru";
+}
+
+<div class="row">
+    <h2>Buat Grup Baru</h2>
+</div>
+<form id="creategroupform" method="post" action="@Url.Content("~/Contact/CreateGroup")">
+    <div class="label row">
+        <label for="GroupName">Nama Grup</label>
+    </div>
+    <div class="input-wrapper row">
+        <input type="text" name="GroupName" id="GroupName" class="col_5"/>
+    </div>
+    <div class="row">
+        <br />
+    </div>
+    <div class="row">
+        <input type="submit" value="Buat Group" class="submit"/>
+    </div>
+</form>

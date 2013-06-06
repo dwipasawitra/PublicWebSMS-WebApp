@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PublicWebSms.Models.Contact>
+
+@{
+    ViewBag.Title = "Kontak";
+}
+<div class="row">
+    <h2>Daftar Kontak</h2>
+</div>
+<div class="row">
+	<input type="submit" value="Select all" class="submit"/>
+	<input type="submit" value="Clear all" class="submit"/>
+	<span>Bulk controls: </span>
+	<input type="submit" value="Send SMS" class="submit"/>
+	<input type="submit" value="Add to group" class="submit"/>
+	<input type="submit" value="Delete" class="submit"/>
+</div>
+<div class="row">
+    <table id="contact-list" class="item-list">
+	    <tbody>
+        @foreach (PublicWebSms.Models.Contact contact in Model)
+        {
+            <tr class="row">
+			    <td class="contact-checkbox">
+				    <input type="checkbox" />
+			    </td>
+			    <td class="contact">
+				    <div class="contact-name">
+					    <span class="contact-name">@contact.Nama</span>
+				    </div>
+				    <div class="contact-number">
+					    <span class="contact-number">@contact.Nomor</span>
+				    </div>
+			    </td>
+			    <td data-contactId="@contact.ContactId" class="contact-button">
+				    <input type="submit" value="Sunting" class="submit"/>
+				    <input type="submit" value="Kirim SMS" class="submit"/>
+				    <input type="submit" value="Lihat SMS" class="submit"/>
+                @if (ViewBag.PartialView) 
+                { 
+                    <input type="submit" value="Keluarkan" class="submit" title="Keluarkan kontak dari grup"/>
+                }
+			    </td>
+		    </tr>
+        }
+		    </tr>
+	    </tbody>
+    </table>
+</div>
