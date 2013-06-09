@@ -1,0 +1,36 @@
+﻿@model PublicWebSms.Models.ReportData
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Laporan Server Pengiriman SMS</h2>
+<p>Pada halaman ini, Anda dapat mengetahui lebih lanjut mengenai bagaimana keadaan server pengirim SMS saat ini.
+Jika Anda mengirim SMS melalui layanan ini, namun SMS sama sekali belum diproses hingga saat ini. Ada kemungkinan 
+jika server dalam keadaan diluar jaringan (luring/<i>offline</i>). Untuk melaporkan masalah pada server, silahkan
+hubungi Putu Wiramaswara Widya (NRP. 5111100012) pada nomor +6283119668934.
+</p>
+<p>Terima Kasih</p>
+<table>
+    <tr>
+        <td><strong>Status Server</strong></td>
+        <td>: 
+        @if (Model.IsOn())
+        {
+            <strong><font color="green">Dalam Jaringan (Daring)</font></strong>
+        }
+        else
+        {
+            <strong><font color="red">Luar Jaringan (Luring)</font></strong>
+        }
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Pengambilan Data Terakhir</strong></td>
+        <td>: @Model.LastUpdate</td>
+    </tr>
+    <tr>
+        <td><strong>Informasi Server</strong></td>
+        <td>: @Model.ServerString</td>
+    </tr>
+</table>

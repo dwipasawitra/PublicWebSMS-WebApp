@@ -140,6 +140,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\MessageProcess.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\ContactUser.cs" />
     <Compile Include="Models\Draft.cs" />
@@ -154,6 +155,7 @@
     </Compile>
     <Compile Include="Models\PwsDbContext.cs" />
     <Compile Include="Models\RegisterData.cs" />
+    <Compile Include="Models\ReportData.cs" />
     <Compile Include="Models\SMS.cs" />
     <Compile Include="Models\SMSAPIInput.cs" />
     <Compile Include="Models\SMSUser.cs" />
