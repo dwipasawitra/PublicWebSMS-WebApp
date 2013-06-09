@@ -30,16 +30,15 @@ namespace PublicWebSms.Controllers
             
         }
 
-        [HttpPost]
         public ActionResult ReportAPI(ReportData reportData, SMSAPIInput apiData)
         {
             // Process wtih some secret data
-            if (apiData.APIId == "andnowforsomethingcompletlydifferent" && apiData.APISecretCode == "it's")
+            if (apiData.APIId == "hahaha" && apiData.APISecretCode == "hihihi")
             {
                 ConfigurationManager.AppSettings["ServerLastUpdate"] = reportData.LastUpdate.ToString();
                 ConfigurationManager.AppSettings["ServerString"] = reportData.ServerString;
             }
-            return Json(null);
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
 
     }

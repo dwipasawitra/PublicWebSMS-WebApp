@@ -84,6 +84,7 @@ namespace PublicWebSms.Models
         public static void DoLogout()
         {
             HttpContext.Current.Session.Abandon();
+            HttpContext.Current.Session.RemoveAll();
         }
 	}
 

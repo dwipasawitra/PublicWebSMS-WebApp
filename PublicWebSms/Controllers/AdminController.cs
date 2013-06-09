@@ -42,7 +42,7 @@ namespace PublicWebSms.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = db.Users.SingleOrDefault(x => x.UserId == userAproveInput.UserId);
+                var user = db.Users.SingleOrDefault(x => x.LoginName == userAproveInput.UserName);
                 user.Activate = userAproveInput.Status;
                 db.SaveChanges();
 

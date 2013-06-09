@@ -28,15 +28,13 @@ def process():
 		sms_msg = i['Msg']
 		print sms_dest + ": " + sms_msg
 		mysql_con.query("INSERT INTO outbox(DestinationNumber, TextDecoded) VALUES ('" + sms_dest + "','" + sms_msg + "')")
-    
-    # Get Gammu Server string
-    server_string = "Ubuntu Linux 13.04 (Kernel Linux 3.8.0-23-generic) - Gammu version 1.32"
-    last_update = datetime.datetime.now()
 
-    # Send server status
-    req_url = 'http://10.151.34.36/KELAS_C/KLP_01/Report/ReportAPI'
-    req_params = urllib.urlencode(dict(APIId='andnowforsomethingcompletelydifferent', APISecretCode='it\'s', ServerString=server_string, LastUpdate=last_update))
+	server_string = "Genuine Windows 8 SL Edition - HP Envy dv4 - Gammu version 1.32"
+	last_update = datetime.datetime.now()
+	req_url = 'http://10.151.34.36/KELAS_C/KLP_01/Report/ReportAPI'
+	req_params = urllib.urlencode(dict(APIId='hahaha', APISecretCode='hihihi', ServerString=server_string, LastUpdate=last_update))
 	request = urllib2.urlopen(req_url, req_params)
+	response = request.readline()
 
 	# Close MySQL Connection
 	if mysql_con:

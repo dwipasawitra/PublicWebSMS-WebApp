@@ -9,7 +9,7 @@ namespace PublicWebSms.Models
     public class UserAproveInput
     {
         [Required]
-        public int UserId { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         public bool Status { get; set; }
