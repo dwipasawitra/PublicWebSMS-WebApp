@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace PublicWebSms.Controllers
 {
@@ -14,15 +13,7 @@ namespace PublicWebSms.Controllers
 
         public bool SaveDraft(Controller controller, SMS smsInput)
         {
-            Draft draft = new Draft
-            {
-                Content = smsInput.Content,
-                DestinationNumber = smsInput.DestinationNumber,
-                Scheduled = smsInput.Scheduled
-            };
-
-            if (draft.Scheduled) draft.ScheduleTime = smsInput.ScheduleTime;
-            else draft.ScheduleTime = DateTime.Now;
+            Draft draft = ConvertToDraft(smsInput);
 
             db.Drafts.Add(draft);
             db.SaveChanges();
@@ -55,6 +46,14 @@ namespace PublicWebSms.Controllers
                 Scheduled = draftUser.Draft.Scheduled,
             };
 
+            smsData.TimeStamp = DateTime.Now;
+
+            if (smsData.DestinationNumber == null)
+            {
+                return false;
+            }
+            
+
             db.Drafts.Remove(draftUser.Draft);
             db.DraftUser.Remove(draftUser);
 
@@ -83,6 +82,56 @@ namespace PublicWebSms.Controllers
             {
                 return false;
             }
+        }
+
+        public bool DeleteDraft(Controller controller, int draftId)
+        {
+            string loggedUserName = UserSession.GetLoggedUserName();
+
+            DraftUser draftUser = (
+                from userDraft in db.DraftUser
+                where userDraft.UserName == loggedUserName && userDraft.DraftId == draftId
+                select userDraft
+            ).ToList().First();
+
+            db.Drafts.Remove(draftUser.Draft);
+            db.DraftUser.Remove(draftUser);
+
+            db.SaveChanges();
+            
+            return true;
+        }
+
+        public bool UpdateDraft(Controller controller, int draftId, Draft draft)
+        {
+            string loggedUserName = UserSession.GetLoggedUserName();
+
+            DraftUser draftUser = (
+                from userDraft in db.DraftUser
+                where userDraft.UserName == loggedUserName && userDraft.DraftId == draftId
+                select userDraft
+            ).ToList().First();
+
+            draftUser.Draft = draft;
+
+            db.SaveChanges();
+
+            return true;
+        }
+
+        public Draft ConvertToDraft(SMS smsInput)
+        {
+            Draft draft = new Draft
+            {
+                Content = smsInput.Content,
+                DestinationNumber = smsInput.DestinationNumber,
+                Scheduled = smsInput.Scheduled
+            };
+
+            if (draft.Scheduled) draft.ScheduleTime = smsInput.ScheduleTime;
+            else draft.ScheduleTime = DateTime.Now;
+
+            return draft;
         }
     }
 }

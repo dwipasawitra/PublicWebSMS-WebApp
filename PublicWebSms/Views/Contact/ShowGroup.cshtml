@@ -3,34 +3,34 @@
 @{
     ViewBag.Title = "Grup";
 }
-<div class="row">
-    <h2>Buat Grup</h2>
-</div>
-<div class="row">
-    <a href="@Url.Content("~/Contact/CreateGroup")" class="button"><span>Buat Grup</span></a>
-</div>
-<div class="row">
-    <h2>Daftar Grup</h2>
-</div>
 
 <div class="row">
-	<input type="submit" value="Select all" class="submit"/>
-	<input type="submit" value="Clear all" class="submit"/>
-	<span>Bulk controls: </span>
-	<input type="submit" value="Send SMS" class="submit"/>
-	<input type="submit" value="Add to group" class="submit"/>
-	<input type="submit" value="Delete" class="submit"/>
+    <a href="@Url.Content("~/Contact/CreateGroup")">
+        <button class="image-button bg-color-darken fg-color-white submit">Buat Grup<i class="icon-tag bg-color-pink fg-color-white"></i></button>
+    </a>
+</div>
+<br />
+<div class="row">
+    <button class="image-button bg-color-darken fg-color-white submit" id="btn-select-all"><i class="icon-checkmark bg-color-yellow fg-color-white"></i>Pilih</button>
+    <button class="image-button bg-color-darken fg-color-white submit" id="btn-clear-all"><i class="icon-cancel-2 bg-color-yellow fg-color-white"></i>Lepas</button>
+    <span>Kontrol jamak:</span>
+    <button class="image-button bg-color-darken fg-color-white submit" id="btn-send-sms"><i class="icon-mail bg-color-green fg-color-white"></i>Kirim SMS</button>
+    <button class="image-button bg-color-darken fg-color-white submit" id="btn-delete-all"><i class="icon-cancel bg-color-redLight fg-color-white"></i>Hapus</button>
+	
 </div>
 <div class="row">
-    <table id="contact-list" class="item-list">
+    <table id="contact-list" class="hovered striped bordered">
 	    <tbody>
     @if (ViewBag.GroupId == -1)
     {
         foreach (PublicWebSms.Models.Group group in Model)
         {
             <tr class="row">
-			    <td class="contact-checkbox">
-				    <input type="checkbox" />
+			    <td class="checkbox-column">
+                    <label class="input-control checkbox">
+                        <input type="checkbox" />
+                        <span class="helper"></span>
+                    </label>
 			    </td>
 			    <td class="contact">
 				    <div class="contact-name">
@@ -38,9 +38,7 @@
 				    </div>
 			    </td>
 			    <td data-groupId="@group.GroupId" class="contact-button">
-				    <input type="submit" value="Sunting" class="submit"/>
-				    <input type="submit" value="Kirim SMS" class="submit"/>
-				    <input type="submit" value="Hapus" class="submit"/>
+				    <a href="">Sunting</a> | <a href="">Kirim SMS</a> | <a href="">Hapus</a>
 			    </td>
 		    </tr>
         }

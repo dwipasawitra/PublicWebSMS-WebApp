@@ -2,10 +2,15 @@
     ViewBag.Title = "Tambah Kontak Baru";
 }
 
-<div class="row">
-    <h2>Tambah Kontak Baru</h2>
-</div>
 <form id="createcontactform" method="post" action="@Url.Content("~/Contact/Create")">
+    <div class="row">
+        <div class="span5">
+            <label class="input-control text">
+                <input type="text" name="Nama" id="Nama" class="col_5"/>
+                <span class="helper">Nama</span>
+            </label>
+        </div>
+    </div>
     <div class="label row">
         <label for="Nama">Nama</label>
     </div>

@@ -4,31 +4,31 @@
     ViewBag.Title = "Kontak";
 }
 <div class="row">
-    <h2>Tambah Kontak</h2>
+    <a href="@Url.Content("~/Contact/Create")">
+        <button class="image-button bg-color-darken fg-color-white submit">Tambah Kontak<i class="icon-user bg-color-blue fg-color-white"></i></button>
+    </a>
+</div>
+<br />
+<div class="row">
+    <button class="image-button bg-color-darken fg-color-white submit" id="btn-select-all"><i class="icon-checkmark bg-color-yellow fg-color-white"></i>Pilih</button>
+    <button class="image-button bg-color-darken fg-color-white submit" id="btn-clear-all"><i class="icon-cancel-2 bg-color-yellow fg-color-white"></i>Lepas</button>
+    <span>Kontrol jamak:</span>
+    <button class="image-button bg-color-darken fg-color-white submit" id="btn-send-sms"><i class="icon-mail bg-color-green fg-color-white"></i>Kirim SMS</button>
+    <button class="image-button bg-color-darken fg-color-white submit" id="btn-add-group"><i class="icon-tag bg-color-pink fg-color-white"></i>Tambahkan ke Grup</button>
+    <button class="image-button bg-color-darken fg-color-white submit" id="btn-delete-all"><i class="icon-cancel bg-color-redLight fg-color-white"></i>Hapus</button>
+	
 </div>
 <div class="row">
-    <a href="@Url.Content("~/Contact/Create")" class="button"><span>Tambah Kontak</span></a>
-</div>
-<div class="row">
-    <h2>Daftar Kontak</h2>
-</div>
-
-<div class="row">
-	<input type="submit" value="Select all" class="submit"/>
-	<input type="submit" value="Clear all" class="submit"/>
-	<span>Bulk controls: </span>
-	<input type="submit" value="Send SMS" class="submit"/>
-	<input type="submit" value="Add to group" class="submit"/>
-	<input type="submit" value="Delete" class="submit"/>
-</div>
-<div class="row">
-    <table id="contact-list" class="item-list">
+    <table id="contact-list" class="hovered striped bordered">
 	    <tbody>
         @foreach (PublicWebSms.Models.Contact contact in Model)
         {
             <tr class="row">
-			    <td class="contact-checkbox">
-				    <input type="checkbox" />
+			    <td class="checkbox-column">
+                    <label class="input-control checkbox">
+                        <input type="checkbox" />
+                        <span class="helper"></span>
+                    </label>
 			    </td>
 			    <td class="contact">
 				    <div class="contact-name">
@@ -38,10 +38,13 @@
 					    <span class="contact-number">@contact.Nomor</span>
 				    </div>
 			    </td>
-			    <td data-contactId="@contact.ContactId" class="contact-button">
-				    <input type="submit" value="Sunting" class="submit"/>
-				    <input type="submit" value="Kirim SMS" class="submit"/>
-				    <input type="submit" value="Lihat SMS" class="submit"/>
+                <td>
+                    <div class="group-list">
+                        <a>College</a>, <a>Old Friend</a>, <a>Old Friend</a>
+                    </div>
+                </td>
+			    <td data-contact-id="@contact.ContactId" class="contact-button">
+                    <a href="">Sunting</a> | <a href="">Kirim SMS</a> | <a href="">Hapus</a>
                 @if (ViewBag.PartialView) 
                 { 
                     <input type="submit" value="Keluarkan" class="submit" title="Keluarkan kontak dari grup"/>
@@ -49,7 +52,6 @@
 			    </td>
 		    </tr>
         }
-		    </tr>
 	    </tbody>
     </table>
 </div>

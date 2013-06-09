@@ -390,7 +390,7 @@ font-weight: normal;
 
 
 /* Wira poenya */
-#error {
+#error, .error {
     padding: 10px;
     background-color: red;
     color: white;

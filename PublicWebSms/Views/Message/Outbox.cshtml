@@ -5,10 +5,7 @@
 }
 
 <div class="row">
-    <h2>Outbox</h2>
-</div>
-<div class="row">
-    <input type="button" value="Buat Pesan Baru" id="newmessage" class="submit" />
+    <button class="image-button bg-color-darken fg-color-white submit" id="newmessage" >Buat SMS baru<i class="icon-mail bg-color-green fg-color-white"></i></button>
 </div>
 
     <br />
@@ -18,28 +15,37 @@
     <div id="information">Pesan telah tercatat! Menunggu proses pengiriman dari server SMS Gateway.</div>
 </div>
 }
+else if (ViewBag.Error == 1)
+{
 <div class="row">
-    <table id="sms-table">
-    <tr>
-        <td><strong>Waktu pengiriman</strong></td>
-        <td><strong>Nomor tujuan</strong></td>
-        <td><strong>Pesan</strong></td>
-        <td><strong>Status</strong></td>
-    </tr>
+    <div id="error">Terjadi kesalahan saat pengiriman pesan!</div>
+</div>
+}
+<div class="row">
+    <table id="sms-table" class="hovered striped bordered">
+        <thead>
+            <tr>
+                <th>Waktu pengiriman</th>
+                <th>Nomor tujuan</th>
+                <th>Pesan</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
     @foreach (PublicWebSms.Models.SMS sms in Model)
     {
         <tr>
             <td class="sms-timestamp">@sms.TimeStamp</td>
             <td class="sms-destination">@sms.DestinationNumber</td>
             <td class="sms-content">@sms.Content</td>
-            <td class="sms-status">@if(sms.Sent == true)
-                    {
+            <td class="sms-status">@if (sms.Sent == true)
+                                   {
                         <span>Terkirim</span>
-                    }
-                    else
-                    {
+                                   }
+                                   else
+                                   {
                         <span>Belum diproses</span>
-                    }
+                                   }
             </td>
         </tr>
     }

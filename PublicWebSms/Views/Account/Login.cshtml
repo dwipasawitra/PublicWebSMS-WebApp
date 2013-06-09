@@ -1,35 +1,41 @@
 ﻿@{
     ViewBag.Title = "Login";
 }
+
 <div class="row">
-    <h2>Login&nbsp;<img src="~/Content/images/loading.gif" id="loading" class="hide" /></h2>
+    <div id="error" class="hide span8">
+        <span class="label important">Nama login atau kata sandi salah! Silahkan periksa kembali.</span>
+    </div>
 </div>
 <div class="row">
-    <div id="error" class="hide">Nama login atau kata sandi salah, silahkan periksa kembali.</div>
-</div>
-<div class="row">
-    <p class="col_5">Belum memiliki akun? <strong><a href="~/Account/Register">Daftar sekarang!</a></strong> Gratis</p>
+    <div class="span5">Belum memiliki akun? <strong><a href="~/Account/Register">Daftar sekarang!</a></strong> Gratis</div>
 </div>
 
 <form method="post" action="@Url.Content("~/Account/Login")" id="login">
-<div class="row label">
-    <label for="LoginName">Nama login</label>
-</div>
-<div class="row input-wrapper">
-    @Html.TextBox("LoginName")
+
+<div class="row">
+    <div class="span5">
+        <div class="input-control text">
+            <input type="text" placeholder="Nama akun" name="LoginName" id="LoginName" />
+            <button class="btn-clear" tabindex="-1" type="button"></button>
+        </div>
+    </div>
 </div>
 
-<div class="row label">
-    <label for="Password">Kata kunci</label>
-</div>
-<div class="row input-wrapper">
-    @Html.Password("Password")
+
+<div class="row">
+    <div class="span5">
+        <div class="input-control password">
+            <input type="password" placeholder="Kata sandi" name="Password" id="Password" />
+            <button class="btn-reveal" tabindex="-1" type="button"></button>
+        </div>
+    </div>
 </div>
 
 <div class="row">
-    <br />
-    <input type="submit" value="Login" class="submit" />
+    <input type="submit" value="Login" class="bg-color-blue fg-color-white" />
     <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+    <img src="~/Content/images/loading.gif" id="loading" class="hide" />
 </div>
 
 </form>
