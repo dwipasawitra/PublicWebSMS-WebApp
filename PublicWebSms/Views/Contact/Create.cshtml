@@ -5,33 +5,33 @@
 <form id="createcontactform" method="post" action="@Url.Content("~/Contact/Create")">
     <div class="row">
         <div class="span5">
-            <label class="input-control text">
-                <input type="text" name="Nama" id="Nama" class="col_5"/>
-                <span class="helper">Nama</span>
-            </label>
+            <div class="input-control text">
+                <input type="text" name="Nama" id="Nama" placeholder="Nama"/>
+                <button class="btn-clear"></button>
+            </div>
         </div>
     </div>
-    <div class="label row">
-        <label for="Nama">Nama</label>
-    </div>
-    <div class="input-wrapper row">
-        <input type="text" name="Nama" id="Nama" class="col_5"/>
+
+    <div class="row">
+        <div class="span5">
+            <div class="input-control text">
+                <input type="text" name="Nomor" id="Nomor" placeholder="Nomor"/>
+                <button class="btn-clear"></button>
+            </div>
+        </div>
     </div>
 
-    <div class="label row">
-        <label for="Nomor">Nomor</label>
+    <div class="row">
+        <div class="span5">
+            <div class="input-control text">
+                <input type="text" name="groupName" id="groupName" placeholder="Grup (boleh kosong)"/>
+                <button class="btn-clear"></button>
+            </div>
+        </div>
     </div>
-    <div class="input-wrapper row">
-        <input type="text" name="Nomor" id="Nomor" />
-    </div>
-    <div class="label row">
-        <label for="groupName">Grup (boleh kosong)</label>
-    </div>
-    <div class="input-wrapper row">
-        <input type="text" name="groupName" id="groupName" />
-    </div>
+
     <br />
     <div class="row">
-        <input type="submit" value="Tambah Kontak" class="submit"/>
+        <button type="submit" class="image-button bg-color-darken fg-color-white submit">Buat Kontak<i class="icon-plus bg-color-blue fg-color-white"></i></button>
     </div>
 </form>

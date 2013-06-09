@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PublicWebSms.Models.Contact>
+﻿@model IEnumerable<PublicWebSms.Models.ContactList>
 
 @{
     ViewBag.Title = "Kontak";
@@ -21,7 +21,7 @@
 <div class="row">
     <table id="contact-list" class="hovered striped bordered">
 	    <tbody>
-        @foreach (PublicWebSms.Models.Contact contact in Model)
+        @foreach (PublicWebSms.Models.ContactList contactList in Model)
         {
             <tr class="row">
 			    <td class="checkbox-column">
@@ -32,18 +32,21 @@
 			    </td>
 			    <td class="contact">
 				    <div class="contact-name">
-					    <span class="contact-name">@contact.Nama</span>
+					    <span class="contact-name">@contactList.Nama</span>
 				    </div>
 				    <div class="contact-number">
-					    <span class="contact-number">@contact.Nomor</span>
+					    <span class="contact-number">@contactList.Nomor</span>
 				    </div>
 			    </td>
                 <td>
                     <div class="group-list">
-                        <a>College</a>, <a>Old Friend</a>, <a>Old Friend</a>
+                    @foreach(PublicWebSms.Models.Group group in contactList.ListGroup)
+                    {
+                        <a href="@Url.Content("~/Contact/ShowGroup?groupId=" + group.GroupId)">@group.GroupName</a>  
+                    }
                     </div>
                 </td>
-			    <td data-contact-id="@contact.ContactId" class="contact-button">
+			    <td data-contact-id="@contactList.ContactId" class="contact-button">
                     <a href="">Sunting</a> | <a href="">Kirim SMS</a> | <a href="">Hapus</a>
                 @if (ViewBag.PartialView) 
                 { 

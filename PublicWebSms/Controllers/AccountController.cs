@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace PublicWebSms.Controllers
 {
     
-    public class AccountController : Controller
+    public class AccountController : MyController
     {
         //
         // GET: /Account/

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace PublicWebSms.Controllers
 {
     [PwsAuthorize]
-    public class DashboardController : Controller
+    public class DashboardController : MyController
     {
         //
         // GET: /Dashboard/
