@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Dasbor";
+}
+<div id="dashboard-box">
+    
+    <table>
+        <tr>
+            <td><strong>Masuk Terakhir</strong></td>
+            <td>@ViewBag.LastLogin</td>
+        </tr>
+        <tr>
+            <td><strong>Total SMS</strong></td>
+            <td>@ViewBag.SmsTotal pesan</td>
+        </tr>
+        <tr>
+            <td><strong>Draf</strong></td>
+            <td>@ViewBag.DraftCount pesan</td>
+        </tr>
+        <tr>
+            <td><strong>Outbox</strong></td>
+            <td>@ViewBag.OutboxCount pesan</td>
+        </tr>
+        <tr>
+            <td><strong>Kontak</strong></td>
+            <td>@ViewBag.ContactCount kontak</td>
+        </tr>
+        <tr>
+            <td><strong>Grup</strong></td>
+            <td>@ViewBag.GroupCount grup</td>
+        </tr>
+    </table>
+</div>

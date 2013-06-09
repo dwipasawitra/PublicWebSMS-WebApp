@@ -84,6 +84,23 @@ namespace PublicWebSms.Controllers
             }
         }
 
+        public bool SendFree(Controller controller, SMS smsInput)
+        {
+            if (controller.ModelState.IsValid && !FreeSmsSession.IsLimit())
+            {
+                db.SMSes.Add(smsInput);
+                db.SaveChanges();
+
+                FreeSmsSession.IncrementSmsTotal();
+              
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public bool DeleteDraft(Controller controller, int draftId)
         {
             string loggedUserName = UserSession.GetLoggedUserName();

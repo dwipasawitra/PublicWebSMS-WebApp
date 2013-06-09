@@ -18,5 +18,6 @@ namespace PublicWebSms.Models
         public DbSet<GroupUser> GroupUser { get; set; }
         public DbSet<SMSUser> SMSUser { get; set; }
         public DbSet<DraftUser> DraftUser { get; set; }
+        public DbSet<Admin> Admins { get; set; }
     }
 }
