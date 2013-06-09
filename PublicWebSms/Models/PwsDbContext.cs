@@ -9,6 +9,7 @@ namespace PublicWebSms.Models
     public class PwsDbContext: DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Draft> Drafts { get; set; }
         public DbSet<SMS> SMSes { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -16,5 +17,6 @@ namespace PublicWebSms.Models
         public DbSet<ContactUser> ContactUser { get; set; }
         public DbSet<GroupUser> GroupUser { get; set; }
         public DbSet<SMSUser> SMSUser { get; set; }
+        public DbSet<DraftUser> DraftUser { get; set; }
     }
 }

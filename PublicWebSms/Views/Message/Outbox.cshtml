@@ -14,31 +14,25 @@
     <br />
 @if (ViewBag.Success == 1)
 {
+<div class="row">
     <div id="information">Pesan telah tercatat! Menunggu proses pengiriman dari server SMS Gateway.</div>
+</div>
 }
 <div class="row">
-    <table width="100%" id="outbox-table">
+    <table id="sms-table">
     <tr>
-        <td width="20%"><strong>Waktu pengiriman</strong></td>
-        <td width="20%"><strong>Nomor tujuan</strong></td>
-        <td width="70%"><strong>Pesan</strong></td>
-        <td width="10%"><strong>Status</strong></td>
+        <td><strong>Waktu pengiriman</strong></td>
+        <td><strong>Nomor tujuan</strong></td>
+        <td><strong>Pesan</strong></td>
+        <td><strong>Status</strong></td>
     </tr>
     @foreach (PublicWebSms.Models.SMS sms in Model)
     {
         <tr>
-            <td>@sms.TimeStamp</td>
-            <td>@sms.DestinationNumber</td>
-            <td>@sms.Content</td>
-            <td class="statussms">@if (@sms.Draft == true)
-                {
-                    <i>Draft</i>
-                    <br />
-                    <a href="~/Message/Compose/@sms.SmsId">Sunting</a>
-                }
-                else
-                {
-                    if(@sms.Sent == true)
+            <td class="sms-timestamp">@sms.TimeStamp</td>
+            <td class="sms-destination">@sms.DestinationNumber</td>
+            <td class="sms-content">@sms.Content</td>
+            <td class="sms-status">@if(sms.Sent == true)
                     {
                         <span>Terkirim</span>
                     }
@@ -46,7 +40,6 @@
                     {
                         <span>Belum diproses</span>
                     }
-                }
             </td>
         </tr>
     }

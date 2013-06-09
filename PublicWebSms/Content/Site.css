@@ -91,8 +91,7 @@ pre { font-family: "Courier New", Courier, monospace; font-size: 13px; font-weig
 
 /* link colors */
 a { color: #058; text-decoration:none; }
-a:visited { color:#c14b0d; text-decoration:none; }
-a:hover { color:#eb6721; text-decoration:underline; }
+a:hover { color:#eb6721;}
 a:focus { outline:1px dotted #79160d; }
 
 /* .row hr, .row p, .row ul, .row ol, .row dl, .row pre, .row address, .row table, .row form {margin-bottom: 1.6em;} */
@@ -197,6 +196,11 @@ font-weight: normal;
  background-color: rgba(255, 255, 255, 0.8);
 }
 
+#form .input-wrapper input[type="radio"]
+{
+    width: auto;
+}
+
 #form-input textarea {
  resize: none;
 }
@@ -217,6 +221,10 @@ font-weight: normal;
  border: 0px;
 }
 
+#form a.submit, #form a.button {
+ text-decoration: none;
+}
+
 #form .add {
  padding: 0;
  height: 2em;
@@ -231,6 +239,18 @@ font-weight: normal;
 
 #form .submit:active, #form .button:active {
  background: #212121;
+}
+
+#compose-form .checked
+{
+    background: #2672EC;
+    border: none;
+    color: white;
+}
+
+#sms-table
+{
+
 }
 
 #contact-list {
@@ -287,6 +307,21 @@ font-weight: normal;
     border-radius: 5px;
 }
 
+.text-center
+{
+    text-align: center;
+}
+
+.text-left
+{
+    text-align: left;
+}
+
+.text-right
+{
+    text-align: right;
+}
+
 .left {
  float: left;
 }
@@ -298,13 +333,14 @@ font-weight: normal;
  display: none;
 }
 
-.statussms {
-    width: 7em;
+#sms-table .sms-content
+{
+    text-align: left;
 }
-.statussms span {
+
+.sms-status span {
     font-style: italic;
     white-space: nowrap;
-    padding: 0 1em;
 }
 
 /* #Page Styles
@@ -355,22 +391,25 @@ font-weight: normal;
 
 /* Wira poenya */
 #error {
-    width: 100%;
     padding: 10px;
     background-color: red;
     color: white;
-
 }
 
-#outbox-table td {
+#sms-table td {
     text-align: center;
-    border: 1px solid black;
-    
+    border: 1px solid #2A2A2A;
+    padding: 0 1em;
 }
 
 #information {
-    width: 100%;
     padding: 10px;
     background-color: limegreen;
     color: white;
+}
+
+/* ALL PAGE */
+.contact
+{
+    vertical-align: middle;
 }

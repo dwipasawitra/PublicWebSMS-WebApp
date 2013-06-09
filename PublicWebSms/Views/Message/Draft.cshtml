@@ -1,0 +1,57 @@
+﻿@model IEnumerable<PublicWebSms.Models.Draft>
+
+@{
+    ViewBag.Title = "Draft";
+}
+
+<div class="row">
+    <h2>Draft</h2>
+</div>
+<div class="row">
+    <input type="button" value="Buat Pesan Baru" id="newmessage" class="submit" />
+</div>
+
+    <br />
+@if (ViewBag.Success == 1)
+{
+<div class="row">
+    <div id="information">Pesan telah tercatat! Menunggu proses pengiriman dari server SMS Gateway.</div>
+</div>
+}
+<div class="row">
+    <table id="sms-table">
+    <tr>
+        <td><strong>Nomor tujuan</strong></td>
+        <td><strong>Pesan</strong></td>
+        <td><strong>Jadwal kirim</strong></td>
+        <td><strong>Pilihan</strong></td>
+    </tr>
+        @foreach (PublicWebSms.Models.Draft draft in Model)
+        {
+        <tr>
+            <td class="sms-destination">@draft.DestinationNumber</td>
+            <td class="sms-content">@draft.Content</td>
+            <td class="sms-schedule">@if (draft.Scheduled)
+                                     {
+                                         <span>@draft.ScheduleTime</span>
+                                     }
+                                     else
+                                     {
+                                         <span>-</span>
+                                     }
+            </td>
+            <td class="sms-status">
+                <a href="~/Message/Compose?draftId=@draft.DraftId">Sunting</a> | <a href="~/Message/SendDraft?draftId=@draft.DraftId">Kirim</a>
+            </td>
+        </tr>
+        }   
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#newmessage").click(function () {
+            window.location = "@Url.Content("~/Message/Compose")";
+        });
+    });
+</script>

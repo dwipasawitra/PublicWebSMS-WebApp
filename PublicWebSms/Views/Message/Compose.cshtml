@@ -6,49 +6,85 @@
     <h2>Buat SMS&nbsp;<img src="~/Content/images/loading.gif" id="loading" class="hide"/></h2>
 </div>
 <div id="error" class="row hide"></div>
-<form id="smsform" method="post" action="@Url.Content("~/Message/Send")">
+<form id="compose-form" method="post" action="@Url.Content("~/Message/Process")">
 <div class="label row">
     <label for="DestinationNumber">Nomor tujuan</label>
 </div>
 <div class="input-wrapper row">
-    <input name="DestinationNumber" size="20" value="@ViewBag.NomorTujuan" type="text" /> <input type="button" value="Ambil dari kontak" class="submit" style="width: auto !important;"/>
+    <input name="DestinationNumber" size="20" value="@ViewBag.DestinationNumber" type="text" /> <input type="button" value="Ambil dari kontak" class="submit" style="width: auto !important;"/>
 </div>
 <div class="label row">
     <label for="Content">Pesan</label>
 </div>
 <div class="input-wrapper row">
-    <textarea id="smsmsg" name="Content" cols="32" rows="5">@ViewBag.Pesan</textarea>
+    <textarea id="smsmsg" name="Content" cols="32" rows="5">@ViewBag.MessageContent</textarea>
 </div>
 <div class="label row">
-    <label for="smslen">Panjang karakter <input type="text" id="smslen" size="4" readonly="readonly" style="border:none;" value="0" /></label>
+    <span>Panjang karakter <span id="smslen" style="border:none;">0</span></span>
 </div>
 <div class="label row">
     <br />
     <label>Pengiriman terjadwal</label><br />
-    <input type="checkbox" name="Scheduled" value="true" id="schedulecheck" checked="@ViewBag.IsScheduled"/>
+    <input type="checkbox" name="Scheduled" id="schedulecheck" value="true" @ViewBag.ScheduleCheck/>
     <label for="schedulecheck">Aktifkan penjadwalan</label>
 </div>
 <div class="input-wrapper row">
-    <input type="datetime" name="ScheduleTime" id="scheduletime" value="@DateTime.Now.ToString()" />
+    <input type="datetime" name="ScheduleTime" id="scheduletime" value="@ViewBag.ScheduleTime" />
 </div>
 
+<div class="label row">
+    <span>Perintah</span>
+</div>
+
+<div class="row input-wrapper">
+    <input type="radio" name="smsAction" id="action-send" value="1" checked="checked"/><label for="action-send" class="sms-action-label">Kirim</label>
+    <input type="radio" name="smsAction" id="action-draft" value="0"/><label for="action-draft" class="sms-action-label">Simpan ke draft</label>
+    <input type="hidden" name="draftId" value="@ViewBag.DraftId" />
+</div>
 <div class="row">
     <br />
-    <input type="hidden" name="Draft" value="false" id="draft" />
-    <input type="submit" value="Kirimkan SMS" class="submit" />
-    <input type="button" value="Simpan sebagai Draf" id="savedraft" class="submit" />
+    <input type="submit" id="process-button" value="Proses SMS" class="submit" />
 </div>
 
 </form>
 
 <script>
     $(document).ready(function () {
+        /*
+        $("#process-button").click(function () {
+            alert($("#action-send").prop("checked"));
+            return false;
+        });
+        */
+
+        /* Mengubah tampilan tombol aksi */
+        $(".sms-action-label").each(function () {
+            if ($(this).prop("for") == "action-send") {
+                $(this).addClass("checked");
+            }
+            $(this).click(function () {
+                $(".sms-action-label").each(function () {
+                    $(this).toggleClass("checked");
+                });
+            });
+        });
+        
+        $("input[name=smsAction]").hide();
+        $(".sms-action-label").click
+
         $("#loading").hide();
         $("#error").hide();
-        $("#scheduletime").datepicker({ dateFormat: "dd/mm/yy 00:00:00" });
+        $("#scheduletime").datepicker({ dateFormat: "m/d/yy 00:00:00" });
 
-        $("#scheduletime").hide();
+        $("#scheduletime").each(function () {
+            if ($("#schedulecheck").prop("checked")) {
+                $(this).show();
+            }
+            else $(this).hide();
+        });
         $("#scheduletimelabel").hide();
+
+
 
         $("#schedulecheck").click(function () {
             if ($(this).attr("checked")) {
@@ -61,7 +97,7 @@
 
         $("#smsmsg").keyup(function () {
             var smslen = $("#smsmsg").val().length
-            $("#smslen").val(smslen);
+            $("#smslen").text(smslen);
             if (parseInt(smslen) > 160) {
                 $("#smsmsg").css("background-color", "#F5FF8C");
                 $("#smslen").css({ "font-weight": "bold", "color": "red" });

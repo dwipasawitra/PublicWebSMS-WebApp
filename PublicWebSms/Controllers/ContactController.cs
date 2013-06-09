@@ -40,14 +40,29 @@ namespace PublicWebSms.Controllers
             return View(dataContact);
         }
 
+        public ActionResult AddContactToGroup(Contact contact, Group group) 
+        {
+            GroupContact groupContact = new GroupContact
+            {
+                GroupId = group.GroupId,
+                ContactId = contact.ContactId
+            };
+
+            db.GroupsContact.Add(groupContact);
+            db.SaveChanges();
+
+            return Redirect("~/Contact");
+        }
+
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(Contact newContact)
+        public ActionResult Create(Contact newContact, string groupName = "")
         {
+            string loggedUserName = UserSession.GetLoggedUserName();
             bool sukses = false;
 
             if (ModelState.IsValid) 
@@ -63,11 +78,26 @@ namespace PublicWebSms.Controllers
                 db.ContactUser.Add(contactUser);
                 db.SaveChanges();
 
+                //Group group = from dataGroup in db.Groups where dataGroup.GroupName == groupName select dataGroup
+                //GroupUser groupUser = (GroupUser)from dataGroup in db.GroupUser where dataGroup.Group.GroupName == groupName && dataGroup.UserName == UserSession.GetLoggedUserName() select dataGroup;
+                GroupUser groupUser = db.GroupUser.SingleOrDefault(dataGroup => dataGroup.Group.GroupName == groupName && dataGroup.UserName == loggedUserName);
+
+                if (groupUser == null)
+                {
+                    Group newGroup = new Group { GroupName = groupName };
+                    this.CreateGroup(newGroup);
+                    this.AddContactToGroup(newContact, newGroup);
+                }
+                else 
+                {
+                    this.AddContactToGroup(newContact, groupUser.Group);
+                }
+
                 sukses = true;
 
                 if (!Request.IsAjaxRequest())
                 {
-                    return Redirect("~/Contact/Create?sukses=1");
+                    return Redirect("~/Contact?sukses=1");
                 }
 
             }
@@ -108,22 +138,53 @@ namespace PublicWebSms.Controllers
 
                 if (!Request.IsAjaxRequest())
                 {
-                    return Redirect("~/Contact/CreateGroup?sukses=1");
+                    return Redirect("~/Contact/ShowGroup?sukses=1");
+                }
+                else
+                {
+                    return Json(sukses);
                 }
             }
+            else 
+            {
+                if (!Request.IsAjaxRequest())
+                {
+                    return Redirect("~/Contact/ShowGroup?sukses=0");
+                }
+                else
+                {
+                    return Json(sukses);
+                }
+            }
+
+
             return View();
         }
 
-        public ActionResult ShowContact(int idKontak = -1)
+        public ActionResult ShowContact(int contactId = -1)
         {
             return Redirect("~/Message/Compose");
             //return View();
         }
 
-        public ActionResult ShowGroup(int idGroup = -1)
+        public ActionResult ShowGroup(int groupId = -1)
         {
-            return Redirect("~/Message/Compose");
-            //return View();
+            string loggedUserName = UserSession.GetLoggedUserName();
+            
+            List<Group> dataGroup = null;
+
+            if (groupId > 0)
+            {
+                dataGroup = (from groupUser in db.GroupUser where groupUser.Group.GroupId == groupId && groupUser.UserName == loggedUserName select groupUser.Group).ToList();
+            }
+            else
+            {
+                dataGroup = (from groupUser in db.GroupUser where groupUser.UserName == loggedUserName select groupUser.Group).ToList();
+            }
+            
+            ViewBag.GroupId = groupId;
+            //return Redirect("~/Message/Compose");
+            return View(dataGroup);
         }
 
        

@@ -1,16 +1,16 @@
-﻿@model IEnumerable<PublicWebSms.Models.Contact>
+﻿@model IEnumerable<PublicWebSms.Models.Group>
 
 @{
-    ViewBag.Title = "Kontak";
+    ViewBag.Title = "Grup";
 }
 <div class="row">
-    <h2>Tambah Kontak</h2>
+    <h2>Buat Grup</h2>
 </div>
 <div class="row">
-    <a href="@Url.Content("~/Contact/Create")" class="button"><span>Tambah Kontak</span></a>
+    <a href="@Url.Content("~/Contact/CreateGroup")" class="button"><span>Buat Grup</span></a>
 </div>
 <div class="row">
-    <h2>Daftar Kontak</h2>
+    <h2>Daftar Grup</h2>
 </div>
 
 <div class="row">
@@ -24,7 +24,9 @@
 <div class="row">
     <table id="contact-list" class="item-list">
 	    <tbody>
-        @foreach (PublicWebSms.Models.Contact contact in Model)
+    @if (ViewBag.GroupId == -1)
+    {
+        foreach (PublicWebSms.Models.Group group in Model)
         {
             <tr class="row">
 			    <td class="contact-checkbox">
@@ -32,23 +34,18 @@
 			    </td>
 			    <td class="contact">
 				    <div class="contact-name">
-					    <span class="contact-name">@contact.Nama</span>
-				    </div>
-				    <div class="contact-number">
-					    <span class="contact-number">@contact.Nomor</span>
+					    <span class="contact-name">@group.GroupName</span>
 				    </div>
 			    </td>
-			    <td data-contactId="@contact.ContactId" class="contact-button">
+			    <td data-groupId="@group.GroupId" class="contact-button">
 				    <input type="submit" value="Sunting" class="submit"/>
 				    <input type="submit" value="Kirim SMS" class="submit"/>
-				    <input type="submit" value="Lihat SMS" class="submit"/>
-                @if (ViewBag.PartialView) 
-                { 
-                    <input type="submit" value="Keluarkan" class="submit" title="Keluarkan kontak dari grup"/>
-                }
+				    <input type="submit" value="Hapus" class="submit"/>
 			    </td>
 		    </tr>
         }
+    }
+        
 		    </tr>
 	    </tbody>
     </table>
