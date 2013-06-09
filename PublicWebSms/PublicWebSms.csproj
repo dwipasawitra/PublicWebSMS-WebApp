@@ -231,7 +231,6 @@
     <Content Include="Views\Contact\ShowGroup.cshtml" />
     <Content Include="Views\Message\Draft.cshtml" />
     <Content Include="Views\Message\Process.cshtml" />
-    <Content Include="Views\Message\SendDraft.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

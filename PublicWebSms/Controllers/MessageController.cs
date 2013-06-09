@@ -29,7 +29,11 @@ namespace PublicWebSms.Controllers
         {
             string loggedUserName = UserSession.GetLoggedUserName();
 
-            var dataSMS = (from smsUser in db.SMSUser where smsUser.UserName == loggedUserName && smsUser.SMS.Draft == false select smsUser.SMS).ToList();
+            var dataSMS = (
+                from smsUser in db.SMSUser 
+                where smsUser.UserName == loggedUserName && smsUser.SMS.Draft == false 
+                select smsUser.SMS
+            ).ToList();
 
             // AJAX Request: Tampilkan data dalam bentuk JSON
             // Web Request: Tampilkan seluruh halaman dalam bentuk tabel
@@ -40,6 +44,14 @@ namespace PublicWebSms.Controllers
             }
 
             ViewBag.Success = success;
+            ViewBag.Error = 0;
+
+            int error = Convert.ToInt32(Request.QueryString["error"]);
+            if (error == 1)
+            {
+                ViewBag.Error = 1;
+            }
+
             return View(dataSMS);
         }
 
@@ -71,7 +83,12 @@ namespace PublicWebSms.Controllers
             ViewBag.Scheduled = false;
             ViewBag.ScheduleTime = DateTime.Now;
 
-            ViewBag.IsValid = Convert.ToBoolean(Request.QueryString["isValid"]);
+            ViewBag.IsValid = 1;
+            string isValid = Request.QueryString["isValid"];
+            if (isValid == "0")
+            {
+                ViewBag.IsValid = 0;
+            }
 
             if (draftId > 0)
             {
@@ -96,7 +113,7 @@ namespace PublicWebSms.Controllers
 
         public ActionResult Process(SMS smsInput, int smsAction)
         {
-            bool sukses = false;
+            bool success = false;
             string loggedUserName = UserSession.GetLoggedUserName();
 
             if (smsAction == 1)
@@ -108,22 +125,37 @@ namespace PublicWebSms.Controllers
                 // Dikomentari sementara, nanti masalah nilai bawaan harus diatur di model, bukan di kode ini (seperti tiga baris diatas itu)
                 if (ModelState.IsValid)
                 {
-                    sukses = messageProcess.Send(this, smsInput);
+                    success = messageProcess.Send(this, smsInput);
 
-                    if (!Request.IsAjaxRequest())
+                    if (success)
                     {
-                        if (sukses)
+                        // delete jika dari draft
+                        int draftId = Convert.ToInt32(Request.Form["draftId"]);
+                        
+                        if (draftId > 0)
                         {
-                            return Redirect("~/Message/Outbox?sukses=1");
+                            messageProcess.DeleteDraft(this, draftId);
+                        }
+
+                        if (!Request.IsAjaxRequest())
+                        {
+                            return Redirect("~/Message/Outbox?success=1");
                         }
                         else
                         {
-                            return Redirect("~/Message/Outbox?sukses=0");
+                            return Json(true);
                         }
                     }
                     else
                     {
-                        return Json(sukses);
+                        if (!Request.IsAjaxRequest())
+                        {
+                            return Redirect("~/Message/Outbox?error=1");
+                        }
+                        else
+                        {
+                            return Json(false);
+                        }
                     }
 
                 }
@@ -131,27 +163,27 @@ namespace PublicWebSms.Controllers
                 {
                     // simpan ke draft kalau belum ada di draft
                     int draftId = Convert.ToInt32(Request.Form["draftId"]);
-                    int theDraftId;
 
                     if (draftId > 0)
                     {
-                        theDraftId = draftId;
+                        Draft draft = messageProcess.ConvertToDraft(smsInput);
+                        messageProcess.UpdateDraft(this, draftId, draft);
                     }
                     else
                     {
-                        sukses = messageProcess.SaveDraft(this, smsInput);
+                        messageProcess.SaveDraft(this, smsInput);
                         int lastDraftId = (
                             from draftUser in db.DraftUser 
                             where draftUser.UserName == loggedUserName 
                             select draftUser.DraftId
                         ).ToList().Last();
 
-                        theDraftId = lastDraftId;
+                        draftId = lastDraftId;
                     }
 
                     if (!Request.IsAjaxRequest())
                     {
-                        return Redirect("~/Message/Compose?draftId=" + theDraftId + "&isValid=false");
+                        return Redirect("~/Message/Compose?draftId=" + draftId + "&isValid=0");
                     }
                     else
                     {
@@ -161,9 +193,9 @@ namespace PublicWebSms.Controllers
             }
             else
             {
-                sukses = messageProcess.SaveDraft(this, smsInput);
+                success = messageProcess.SaveDraft(this, smsInput);
 
-                if (sukses)
+                if (success)
                 {
                     return Redirect("~/Message/Draft?success=1");
                 }
@@ -172,6 +204,27 @@ namespace PublicWebSms.Controllers
                     return Redirect("~/Message/Draft?success=0");
                 }
             }
+        }
+
+        public ActionResult SendDraft(int draftId = -1)
+        {
+            bool success = false;
+
+            if (draftId > 0)
+            {
+                success = messageProcess.SendDraft(this, draftId);
+
+                if (success)
+                {
+                    return Redirect("~/Message/Outbox?success=1");
+                }
+                else
+                {
+                    return Redirect("~/Message/Compose?draftId=" + draftId + "&isValid=0");
+                }
+            }
+
+            return Redirect("~/Message/Draft");
         }
 
         public ActionResult ScheduleSMS(SMS smsInput)

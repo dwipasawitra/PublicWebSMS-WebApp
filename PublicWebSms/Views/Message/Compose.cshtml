@@ -1,53 +1,86 @@
 ﻿@{
     ViewBag.Title = "Buat SMS";
 }
+<div class="grid">
+<div class="row">
+    <div id="error" class="hide label important">SMS belum valid!</div>
+</div>
+
+@if (ViewBag.IsValid != 1)
+{
+<div class="row">
+    <div class="label important">SMS belum valid!</div>
+</div>
+}
+
+<form id="compose-form" method="post" action="@Url.Content("~/Message/Process")">
+    <div class="row">
+        <div class="span5">
+            <div class="input-control text">
+                <input type="text" name="DestinationNumber" id="DestinationNumber" placeholder="Nomor tujuan" maxlength="13" />
+                <button class="btn-clear" tabindex="-1" type="button"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span5">
+            <div class="input-control textarea">
+                <textarea id="smsmsg" name="Content" cols="32" rows="5" placeholder="Isi SMS">@ViewBag.MessageContent</textarea>
+            </div>
+        </div>
+    </div>
 
 <div class="row">
-    <h2>Buat SMS&nbsp;<img src="~/Content/images/loading.gif" id="loading" class="hide"/></h2>
-</div>
-<div id="error" class="row hide"></div>
-<form id="compose-form" method="post" action="@Url.Content("~/Message/Process")">
-<div class="label row">
-    <label for="DestinationNumber">Nomor tujuan</label>
-</div>
-<div class="input-wrapper row">
-    <input name="DestinationNumber" size="20" value="@ViewBag.DestinationNumber" type="text" /> <input type="button" value="Ambil dari kontak" class="submit" style="width: auto !important;"/>
-</div>
-<div class="label row">
-    <label for="Content">Pesan</label>
-</div>
-<div class="input-wrapper row">
-    <textarea id="smsmsg" name="Content" cols="32" rows="5">@ViewBag.MessageContent</textarea>
-</div>
-<div class="label row">
-    <span>Panjang karakter <span id="smslen" style="border:none;">0</span></span>
-</div>
-<div class="label row">
-    <br />
-    <label>Pengiriman terjadwal</label><br />
-    <input type="checkbox" name="Scheduled" id="schedulecheck" value="true" @ViewBag.ScheduleCheck/>
-    <label for="schedulecheck">Aktifkan penjadwalan</label>
-</div>
-<div class="input-wrapper row">
-    <input type="datetime" name="ScheduleTime" id="scheduletime" value="@ViewBag.ScheduleTime" />
+    <div class="span5">
+        <p>Panjang karakter <span id="smslen" style="border:none;">0</span></p>
+    </div>
 </div>
 
-<div class="label row">
-    <span>Perintah</span>
+<div class="row">
+    <div class="span5">
+        <label class="input-control switch">
+            <input type="checkbox" name="Scheduled" id="schedulecheck" class="bg-color-green" value="true" @ViewBag.ScheduleCheck/>
+            <span class="helper">Aktifkan penjadwalan</span>
+        </label>
+    </div>
 </div>
 
-<div class="row input-wrapper">
-    <input type="radio" name="smsAction" id="action-send" value="1" checked="checked"/><label for="action-send" class="sms-action-label">Kirim</label>
-    <input type="radio" name="smsAction" id="action-draft" value="0"/><label for="action-draft" class="sms-action-label">Simpan ke draft</label>
+<div class="row">
+    <div class="span3">
+        <div class="input-control text">
+            <input type="text" name="ScheduleTime" id="scheduletime" value="@ViewBag.ScheduleTime" />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <p>Perintah</p>
+</div>
+
+<div class="row">
+    <div class="span1">
+        <label class="input-control radio">
+            <input type="radio" name="smsAction" id="action-send" value="1" checked="checked"/>
+            <span class="helper">Kirim</span>
+        </label>
+    </div>
+    <div class="span3">
+        <label class="input-control radio">
+            <input type="radio" name="smsAction" id="action-draft" value="0"/>
+            <span class="helper">Simpan ke draft</span>
+        </label>
+    </div>
     <input type="hidden" name="draftId" value="@ViewBag.DraftId" />
 </div>
 <div class="row">
-    <br />
-    <input type="submit" id="process-button" value="Proses SMS" class="submit" />
+    <button class="image-button bg-color-darken fg-color-white submit" id="process-button">Proses SMS<i class="icon-upload-3 bg-color-green fg-color-white"></i></button>
+    
+    <img src="~/Content/images/loading.gif" id="loading" class="hide"/>
 </div>
 
 </form>
-
+</div>
 <script>
     $(document).ready(function () {
         /*
@@ -68,32 +101,27 @@
                 });
             });
         });
-        
-        $("input[name=smsAction]").hide();
-        $(".sms-action-label").click
-
+       
         $("#loading").hide();
         $("#error").hide();
         $("#scheduletime").datepicker({ dateFormat: "m/d/yy 00:00:00" });
 
         $("#scheduletime").each(function () {
             if ($("#schedulecheck").prop("checked")) {
-                $(this).show();
+                $(this).prop("disabled", false);
             }
-            else $(this).hide();
+            else $(this).prop("disabled", true);
         });
-        $("#scheduletimelabel").hide();
-
-
-
+        
         $("#schedulecheck").click(function () {
-            if ($(this).attr("checked")) {
-                $("#scheduletime").fadeIn(500);
+            if ($(this).prop("checked")) {
+                $("#scheduletime").prop("disabled", false);
             }
             else {
-                $("#scheduletime").fadeOut(500);
+                $("#scheduletime").prop("disabled", true);
             }
         });
+
 
         $("#smsmsg").keyup(function () {
             var smslen = $("#smsmsg").val().length

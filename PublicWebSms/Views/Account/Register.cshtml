@@ -3,63 +3,87 @@
 }
 
 <div class="row">
-    <h2>Register&nbsp;<img src="~/Content/images/loading.gif" id="loading" /></h2>
+    <img src="~/Content/images/loading.gif" id="loading" />
 </div>
 
 <div class="row">
-    <p class="col_5">Silahkan melengkapi formulir di bawah ini dan menyetujui segala jenis <strong><a href="#ketentuan">ketentuan</a></strong> penggunaan layanan PublicWebSMS agar Anda dapat menggunakan layanan ini.</p>
+    <div class="span8">
+        <p>Silahkan melengkapi formulir di bawah ini dan menyetujui segala jenis <strong><a href="#ketentuan">ketentuan</a></strong> penggunaan layanan PublicWebSMS agar Anda dapat menggunakan layanan ini.</p>
+    </div>
 </div>
+
 <div class="row">
-    <p class="col_5">Terima kasih.<br /><strong>Admin</strong></p>
+    <div class="span8">Terima kasih.<br /><strong>Admin</strong></div>
+</div>
+<br />
+<div id="error" class="row" style="display:none;">
+    <div class="span5">
+        <span class="label warning">Maaf isian kurang lengkap</span>
+    </div>
 </div>
 
-
-<div id="error row" style="display:none;">
-    Maaf isian kurang lengkap
-</div>
 <form method="post" id="registerform">
-<div class="label row">
-    <label for="FullName" class="col_5">Nama lengkap</label>
-</div>
-<div class="input-wrapper row">
-    <input type="text" id="FullName" name="FullName" placeholder="Andi Budi Tono"  size="50"/>
-</div>
-<div class="label row">
-    <label for="Email" class="col_5">Surel</label>
-</div>
-<div class="input-wrapper row">
-    <input type="text" id="Email" name="Email" placeholder="ahmadfathana2012@yahoo.com"  size="20"/>
-</div>
-<div class="label row">
-    <label for="Password" class="col_5">Kata kunci</label>
-</div>
-<div class="input-wrapper row">
-    <input type="password" id="Password" name="Password" placeholder="Password"  size="20"/>
-</div>
-<div class="label row">
-    <label for="ConfirmPassword" class="col_5">Konfirmasi kata kunci</label>
-</div>
-<div class="input-wrapper row">
-    <input type="password" id="ConfirmPassword" name="ConfirmPassword" placeholder="Password"  size="20"/>
-</div>
-<div class="label row">
-    <br />
-    <label for="KetentuanLayanan" id="ketentuan" class="col_5"><strong>Ketentuan Layanan</strong></label>
-</div>
-<div class="input-wrapper row">
-    <textarea id="KetentuanLayanan" readonly="readonly" cols="50" rows="5">
-    1) No SARA!
-    2) No Repost!
-    3) No Hoax!
-    4) No Flame!
-    </textarea>
-</div>
-<div class="label row">
-     <input type="checkbox" id="AcceptTerm" name="AcceptTerm" value="true"/><label for="AcceptTerm">Saya setuju dengan ketentuan layanan di atas</label>
-</div>
+    <div class="row">
+        <div class="span5">
+            <div class="input-control text">
+                <input type="text" name="FullName" id="FullName" placeholder="Nama lengkap" maxlength="50"/>
+                <button class="btn-clear" tabindex="-1" type="button"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span5">
+            <div class="input-control text">
+                <input type="text" name="Email" id="Email" placeholder="Surel" />
+                <button class="btn-clear" tabindex="-1" type="button"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span5">
+            <div class="input-control password">
+                <input type="password" name="Password" id="Password" placeholder="Kata sandi" />
+                <button class="btn-reveal" tabindex="-1" type="button"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span5">
+            <div class="input-control password">
+                <input type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="Ketik ulang kata sandi" />
+                <button class="btn-reveal" tabindex="-1" type="button"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span5">
+            <fieldset>
+                <legend class="label info">Ketentuan Layanan</legend>
+                <ol>
+                    <li>No SARA!</li>
+                    <li>No Repost!</li>
+                    <li>No Hoax!</li>
+                    <li>No Flame!</li>
+                </ol>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span5">
+            <label class="input-control checkbox" onclick="">
+                <input type="checkbox" name="AcceptTerm" id="AcceptTerm" value="true" />
+                <span class="helper">Saya setuju dengan Ketentuan Layanan di atas.</span>
+            </label>
+        </div>
+    </div>
+
 <div class="row">
-    <br />
-    <input type="submit" value="Daftar" class="submit"/>
+    <input type="submit" value="Daftar" class="bg-color-blue"/>
 </div>
     
 </form>

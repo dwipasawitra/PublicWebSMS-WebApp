@@ -5,10 +5,7 @@
 }
 
 <div class="row">
-    <h2>Draft</h2>
-</div>
-<div class="row">
-    <input type="button" value="Buat Pesan Baru" id="newmessage" class="submit" />
+    <button class="image-button bg-color-darken fg-color-white submit" id="newmessage" >Buat SMS baru<i class="icon-mail bg-color-green fg-color-white"></i></button>
 </div>
 
     <br />
@@ -19,13 +16,15 @@
 </div>
 }
 <div class="row">
-    <table id="sms-table">
-    <tr>
-        <td><strong>Nomor tujuan</strong></td>
-        <td><strong>Pesan</strong></td>
-        <td><strong>Jadwal kirim</strong></td>
-        <td><strong>Pilihan</strong></td>
-    </tr>
+    <table id="sms-table" class="hovered striped bordered">
+        <thead>
+            <tr>
+                <th>Nomor tujuan</th>
+                <th>Pesan</th>
+                <th>Jadwal kirim</th>
+                <th>Pilihan</th>
+            </tr>
+        </thead>
         @foreach (PublicWebSms.Models.Draft draft in Model)
         {
         <tr>
