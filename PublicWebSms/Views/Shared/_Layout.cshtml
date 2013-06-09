@@ -97,7 +97,7 @@
         <div class="divider"></div>
 
         <ul class="menu">
-        @if (PublicWebSms.Models.UserSession.IsLogin())
+        @if (PublicWebSms.Models.UserSession.IsLogin() && !PublicWebSms.Models.UserSession.IsAdmin())
         {
 			<li><a href="@Url.Content("~/Dashboard")">Dashboard</a></li>
 			<li><a href="@Url.Content("~/Message/Compose")">Compose</a></li>
@@ -105,11 +105,20 @@
 			<li><a href="@Url.Content("~/Message/Outbox")">Outbox</a></li>
 			<li><a href="@Url.Content("~/Contact")">Contact</a></li>
 			<li><a href="@Url.Content("~/Contact/ShowGroup")">Group</a></li>
+            <li><a href="@Url.Content("~/Report")">Status Server</a></li>
+            <li style="float:right;"><a href="@Url.Content("~/Account/Logout")">Logout</a></li>
+        }
+        else if(PublicWebSms.Models.UserSession.IsAdmin())
+        {
+            <li><a href="@Url.Content("~/Admin/UserAprove")">User Management</a></li>
+            <li><a href="@Url.Content("~/Report")">Status Server</a></li>
             <li style="float:right;"><a href="@Url.Content("~/Account/Logout")">Logout</a></li>
         }
         else
         {
             <li><a href="@Url.Content("~/")">Beranda</a></li>
+            <li><a href="@Url.Content("~/Message/FreeCompose")">SMS Gratis</a></li>
+            <li><a href="@Url.Content("~/Report")">Status Server</a></li>
             <li><a href="@Url.Content("~/Home/About")">Tentang</a></li>
             <li style="float:right;"><a href="@Url.Content("~/Account/Login")">Login</a></li>
         }

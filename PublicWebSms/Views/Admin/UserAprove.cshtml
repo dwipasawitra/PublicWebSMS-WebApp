@@ -1,0 +1,71 @@
+﻿@model IEnumerable<PublicWebSms.Models.User>
+
+@{
+    ViewBag.Title = "Atur Persetujuan Pengguna";
+}
+
+
+    <table>
+        <tr>
+            <td>
+                <a href="?showWhat=0">Tampilkan semua pengguna</a>
+            </td>
+            <td>
+                <a href="?showWhat=1">Tampilkan pengguna aktif</a>
+            </td>
+            <td>
+                <a href="?showWhat=2">Tampilkan pengguna nonaktif</a>
+            </td>
+        </tr>
+    </table>
+    
+    <br />
+
+    <p>Melalui halaman ini, Administrator dapat mengaktifkan/menonaktifkan pengguna yang terdaftar.</p>
+<table >
+    @foreach (PublicWebSms.Models.User user in Model)
+    {
+        <tr>
+            <td>@user.LoginName</td>
+            <td>
+                @if (user.Activate == true)
+                {
+                    string url = "nonactivate('" + user.LoginName + "')";
+                         
+                    @:<input type="button" value="Nonaktifkan" onclick="@Html.Raw(url)" />
+                }
+                else
+                {
+                    string url = "activate('" + user.LoginName + "')";         
+                    @:<input type="button" value="Aktifkan" onclick="@Html.Raw(url)" />
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+<script>
+    function nonactivate(userid)
+    {
+        $.post('@Url.Action("UserAprove", "Admin")', 'UserName=' + userid + '&Status=false', function(data)
+        {
+            if(data.success == true)
+            {
+                window.location = '@Url.Action("UserAprove", "Admin")';
+            }
+
+        }, "json");
+    }
+
+    function activate(userid)
+    {
+        $.post('@Url.Action("UserAprove", "Admin")', 'UserName=' + userid + '&Status=true', function(data)
+        {
+            if(data.success == true)
+            {
+                window.location = '@Url.Action("UserAprove", "Admin")';
+            }
+
+        }, "json");
+    }
+</script>

@@ -135,6 +135,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ContactProcess.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Controllers\MessageProcess.cs" />
     <Compile Include="Controllers\MyController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\ContactList.cs" />
     <Compile Include="Models\ContactUser.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="Models\GroupContact.cs" />
     <Compile Include="Models\GroupUser.cs" />
     <Compile Include="Models\LoginData.cs" />
+    <Compile Include="Models\PwsAdminAuthorize.cs" />
     <Compile Include="Models\PwsAuthorize.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -163,6 +166,7 @@
     <Compile Include="Models\SMSAPIInput.cs" />
     <Compile Include="Models\SMSUser.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserAproveInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -360,7 +364,10 @@
     <Content Include="Content\metro\fonts\iconFont.eot" />
     <Content Include="Content\metro\fonts\iconFont.ttf" />
     <Content Include="Content\metro\fonts\iconFont.woff" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Message\FreeSmsLimit.cshtml" />
+    <Content Include="Views\Admin\UserAprove.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

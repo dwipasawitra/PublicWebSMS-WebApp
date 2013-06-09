@@ -13,7 +13,28 @@
 </div>
 }
 
-<form id="compose-form" method="post" action="@Url.Content("~/Message/Process")">
+@if (ViewBag.FreeSmsSent == true)
+{
+<div class="row">
+    <div class="label">SMS gratis telah diproses, semoga selamat sampe tujuan :D</div>
+</div>
+}
+
+@if (ViewBag.FreeMode == true)
+{
+    <div class="row">
+    <div class="label">Anda sudah mengirim @ViewBag.SmsCount SMS dari batas @ViewBag.SmsLimit SMS yang diperbolehkan.</div>
+    </div>
+}
+
+@if (ViewBag.FreeMode == true)
+{
+    @:<form id="compose-form" method="post" action="@Url.Content("~/Message/ProcessFree")">
+}
+else
+{
+    @:<form id="compose-form" method="post" action="@Url.Content("~/Message/Process")">
+}
     <div class="row">
         <div class="span5">
             <div class="input-control text">
@@ -37,6 +58,8 @@
     </div>
 </div>
 
+@if(ViewBag.FreeMode != true)
+{
 <div class="row">
     <div class="span5">
         <label class="input-control switch">
@@ -45,6 +68,7 @@
         </label>
     </div>
 </div>
+}
 
 <div class="row">
     <div class="span3">
@@ -61,15 +85,25 @@
 <div class="row">
     <div class="span1">
         <label class="input-control radio">
-            <input type="radio" name="smsAction" id="action-send" value="1" checked="checked"/>
+            @if (ViewBag.FreeMode != true)
+            {
+                <input type="radio" name="smsAction" id="action-send" value="1" checked="checked"/>
+            }
+            else
+            {
+                <input type="radio" name="smsAction" id="action-send" value="2" checked="checked"/>
+            }
             <span class="helper">Kirim</span>
         </label>
     </div>
     <div class="span3">
-        <label class="input-control radio">
-            <input type="radio" name="smsAction" id="action-draft" value="0"/>
-            <span class="helper">Simpan ke draft</span>
-        </label>
+        @if (ViewBag.FreeMode != true)
+        {
+            <label class="input-control radio">
+                <input type="radio" name="smsAction" id="action-draft" value="0"/>
+                <span class="helper">Simpan ke draft</span>
+            </label>
+        }
     </div>
     <input type="hidden" name="draftId" value="@ViewBag.DraftId" />
 </div>

@@ -73,9 +73,29 @@ namespace PublicWebSms.Controllers
             return View(dataDraft);
         }
 
+        [AllowAnonymous]
+        public ActionResult FreeCompose(int freeSuccess = -1, int isValid = 1)
+        {
+            if (!FreeSmsSession.IsLimit())
+            {
+                if (freeSuccess == 1)
+                {
+                    ViewBag.FreeSmsSent = true;
+                }
+
+                ViewBag.SmsCount = FreeSmsSession.GetCurrentSmsCount();
+                ViewBag.SmsLimit = FreeSmsSession.GetSmsLimit();
+                ViewBag.IsValid = isValid;
+                ViewBag.FreeMode = true;
+                return View("Compose");
+            }
+
+            return View("FreeSmsLimit");
+        }
         /*
          * Compose: menampilkan borang pembuatan pesan atau pengeditan pesan Draft
          */
+
         public ActionResult Compose(int draftId = -1, string destinationNumber = "")
         {
             ViewBag.DraftId = draftId;
@@ -112,6 +132,35 @@ namespace PublicWebSms.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult ProcessFree(SMS smsInput, int smsAction)
+        {
+
+            bool success;
+            if (smsAction == 2)
+            {
+                // Khusus untuk free SMS
+                if (ModelState.IsValid)
+                {
+                    success = messageProcess.SendFree(this, smsInput);
+                    if (success)
+                    {
+                        return Redirect("~/Message/FreeCompose?freeSuccess=1");
+                    }
+                    else
+                    {
+                        return Redirect("~/Message/FreeCompose?isValid=0");
+                    }
+                 }
+                else
+                {
+                    return Redirect("~/Message/FreeCompose?isValid=0");
+                }
+                    
+            }
+            return View("FreeSmsLimit");
+
+        }
         public ActionResult Process(SMS smsInput, int smsAction)
         {
             bool success = false;
@@ -160,6 +209,7 @@ namespace PublicWebSms.Controllers
                     }
 
                 }
+               
                 else
                 {
                     // simpan ke draft kalau belum ada di draft
@@ -174,8 +224,8 @@ namespace PublicWebSms.Controllers
                     {
                         messageProcess.SaveDraft(this, smsInput);
                         int lastDraftId = (
-                            from draftUser in db.DraftUser 
-                            where draftUser.UserName == loggedUserName 
+                            from draftUser in db.DraftUser
+                            where draftUser.UserName == loggedUserName
                             select draftUser.DraftId
                         ).ToList().Last();
 

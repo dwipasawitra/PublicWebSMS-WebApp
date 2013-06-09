@@ -18,5 +18,15 @@ namespace PublicWebSms.Models
 
         [Required]
         public string LoginPassword { get; set; }
+
+        public DateTime LastLogin { get; set; }
+
+        [Required]
+        public bool Activate { get; set; }
+
+        public User()
+        {
+            Activate = false;
+        }
     }
 }

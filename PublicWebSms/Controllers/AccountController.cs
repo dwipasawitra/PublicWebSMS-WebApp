@@ -84,7 +84,7 @@ namespace PublicWebSms.Controllers
             
             if (ModelState.IsValid && registerData.AcceptTerm == true)
             {
-                User newUser = new User { LoginName = registerData.Email, LoginPassword = registerData.Password };
+                User newUser = new User { LoginName = registerData.Email, LoginPassword = registerData.Password, LastLogin = DateTime.Now, Activate = false};
                 db.Users.Add(newUser);
                 db.SaveChanges();
 

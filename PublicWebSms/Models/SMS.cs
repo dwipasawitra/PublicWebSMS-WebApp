@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -39,8 +40,14 @@ namespace PublicWebSms.Models
         [Required]
         public bool Scheduled { get; set; }
 
+        
         [Required]
         public DateTime ScheduleTime { get; set; }
 
+        public SMS()
+        {
+            ScheduleTime = DateTime.Now;
+            TimeStamp = DateTime.Now;
+        }
     }
 }
