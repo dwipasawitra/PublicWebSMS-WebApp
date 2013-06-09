@@ -41,19 +41,23 @@
             display: inline;
         }
         #footer {
-            position: fixed;
-            bottom: 0;
             margin: 0 auto;
             width: 100%;
             height: 2em;
-            background: #1D1D1D;
             padding: .5em;
             text-align: center;
-            color: #FFF;
+            color: #1d1d1d !important;
             z-index: 1000;
+        }
+        #footer * {
+            color: #1D1D1D !important;
         }
         #main {
             padding-bottom: 3em;
+        }
+        #gateway-status {
+            float: left;
+            margin: 15px 0 0 10px;
         }
     </style>
     @*
@@ -70,12 +74,23 @@
 <body class="metrouicss" onload="prettyPrint()">
 <div class="page">
 <div class="nav-bar bg-color-darken">
+    <a href="@Url.Content("~/Report")" id="gateway-status">
+    @if(ViewBag.GatewayStatus)
+    {
+        <i class="icon-broadcast fg-color-white" title="Server SMS online"></i>
+    }
+    else
+    {
+        <i class="icon-broadcast fg-color-redLight" title="Server SMS offline"></i>
+    }
+    </a>
     <div class="nav-bar-inner padding10">
         <span class="pull-menu"></span>
 
-        <a href="/">
+        <a href="@Url.Content("~/")">
             <span class="element brand">
-                <i class="icon-mail bg-color-green"></i> <span style="vertical-align: top;">Public Web SMS</span>
+                <i class="icon-mail bg-color-green"></i>
+                <span style="vertical-align: top;">Public Web SMS</span>
             </span>
         </a>
 

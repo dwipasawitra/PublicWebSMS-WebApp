@@ -8,50 +8,56 @@ using System.Web.Mvc;
 namespace PublicWebSms.Controllers
 {
     [PwsAuthorize]
-    public class ContactController : Controller
+    public class ContactController : MyController
     {
         private PwsDbContext db = new PwsDbContext();
-        //
-        // GET: /Contact/
-
+        private ContactProcess contactProcess = new ContactProcess();
+        
+        // Index menangani halaman daftar kontak
         public ActionResult Index(int groupId = -1, bool groupEdit = false)
         {
             string loggedUserName = UserSession.GetLoggedUserName();
-            List <Contact> dataContact = null;
-
-            //var dataContact = (from contactUser in db.ContactUser where contactUser.UserName == loggedUserName select smsUser.SMS).ToList();
+            List <Contact> listContact = null;
             
             if (groupId == -1)
             {
-                dataContact = (from contact in db.ContactUser where contact.UserName == loggedUserName select contact.Contact).ToList();
+                listContact = contactProcess.GetListContact(this, loggedUserName);
             }
             else
             {
-                dataContact = (from groupContact in db.GroupsContact join groupUser in  db.GroupUser on groupContact.GroupId equals groupUser.GroupId where groupUser.UserName == loggedUserName && groupUser.GroupId == groupId select groupContact.Contact).ToList();
-                ViewBag.Group = db.Groups.SingleOrDefault(x => x.GroupId == groupId);
+                listContact = contactProcess.GetListContact(this, loggedUserName, groupId);
+                ViewBag.Group = contactProcess.GetGroup(this, loggedUserName, groupId);
+            }
+
+            List<ContactList> listContactList = new List<ContactList>();
+
+            foreach (Contact contact in listContact)
+            {
+                ContactList contactList = new ContactList();
+                
+                contactList.ContactId = contact.ContactId;
+                contactList.Nama = contact.Nama;
+                contactList.Nomor = contact.Nomor;
+                contactList.ListGroup = contactProcess.GetListGroup(this, loggedUserName, contact.ContactId);
+
+                listContactList.Add(contactList);
             }
 
             if (groupEdit)
             {
                 ViewBag.PartialView = true;
-                return PartialView(dataContact);
+                return PartialView(listContactList);
             }
+
             ViewBag.PartialView = false;
-            return View(dataContact);
+            return View(listContactList);
         }
 
         public ActionResult AddContactToGroup(Contact contact, Group group) 
         {
-            GroupContact groupContact = new GroupContact
-            {
-                GroupId = group.GroupId,
-                ContactId = contact.ContactId
-            };
+            GroupContact groupContact = contactProcess.AddContactToGroup(this, contact, group);
 
-            db.GroupsContact.Add(groupContact);
-            db.SaveChanges();
-
-            return Redirect("~/Contact");
+            return Redirect("~/Contact/ShowGroup?groupId=" + group.GroupId);
         }
 
         public ActionResult Create()
@@ -67,31 +73,25 @@ namespace PublicWebSms.Controllers
 
             if (ModelState.IsValid) 
             {
-                db.Contacts.Add(newContact);
-                db.SaveChanges();
-
-                ContactUser contactUser = new ContactUser { 
-                    ContactId = newContact.ContactId,
-                    UserName = UserSession.GetLoggedUserName()
-                };
-
-                db.ContactUser.Add(contactUser);
-                db.SaveChanges();
-
-                //Group group = from dataGroup in db.Groups where dataGroup.GroupName == groupName select dataGroup
-                //GroupUser groupUser = (GroupUser)from dataGroup in db.GroupUser where dataGroup.Group.GroupName == groupName && dataGroup.UserName == UserSession.GetLoggedUserName() select dataGroup;
-                GroupUser groupUser = db.GroupUser.SingleOrDefault(dataGroup => dataGroup.Group.GroupName == groupName && dataGroup.UserName == loggedUserName);
-
-                if (groupUser == null)
+                int contactId = contactProcess.SaveContact(this, newContact);
+                /* masih error
+                if (groupName != "")
                 {
-                    Group newGroup = new Group { GroupName = groupName };
-                    this.CreateGroup(newGroup);
-                    this.AddContactToGroup(newContact, newGroup);
+                    
+                    Group group = contactProcess.IsGroupExist
+                    if (contactProcess.IsGroupExist(this, loggedUserName, groupName))
+                    {
+                        
+                        contactProcess.AddContactToGroup(this, groupUser.Group);
+                    }
+                    else
+                    {
+                        Group newGroup = new Group { GroupName = groupName };
+                        contactProcess.SaveGroup(this, loggedUserName, newGroup);
+                        contactProcess.AddContactToGroup(this, newContact, newGroup);
+                    }
                 }
-                else 
-                {
-                    this.AddContactToGroup(newContact, groupUser.Group);
-                }
+                 */
 
                 sukses = true;
 

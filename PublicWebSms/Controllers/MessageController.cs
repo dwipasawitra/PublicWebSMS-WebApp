@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 namespace PublicWebSms.Controllers
 {
     [PwsAuthorize]
-    public class MessageController : Controller
+    public class MessageController : MyController
     {
         private PwsDbContext db = new PwsDbContext();
         private MessageProcess messageProcess = new MessageProcess();
@@ -100,6 +100,7 @@ namespace PublicWebSms.Controllers
         {
             ViewBag.DraftId = draftId;
             string loggedUserName = UserSession.GetLoggedUserName();
+            ViewBag.DestinationNumber = "";
             ViewBag.Scheduled = false;
             ViewBag.ScheduleTime = DateTime.Now;
 

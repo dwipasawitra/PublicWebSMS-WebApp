@@ -137,13 +137,16 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\ContactProcess.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\MessageProcess.cs" />
+    <Compile Include="Controllers\MyController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\ContactList.cs" />
     <Compile Include="Models\ContactUser.cs" />
     <Compile Include="Models\Draft.cs" />
     <Compile Include="Models\DraftUser.cs" />

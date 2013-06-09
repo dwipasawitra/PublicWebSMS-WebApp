@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace PublicWebSms.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : MyController
     {
         // Database Instance test
         private PwsDbContext db = new PwsDbContext();

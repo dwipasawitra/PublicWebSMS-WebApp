@@ -8,7 +8,7 @@ using System.Configuration;
 
 namespace PublicWebSms.Controllers
 {
-    public class ReportController : Controller
+    public class ReportController : MyController
     {
         //
         // GET: /Report/
