@@ -66,48 +66,55 @@ namespace PublicWebSms.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Contact newContact, string groupName = "")
+        public ActionResult Create(Contact contact, string listGroupName = "")
         {
             string loggedUserName = UserSession.GetLoggedUserName();
-            bool sukses = false;
 
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
-                int contactId = contactProcess.SaveContact(this, newContact);
-                /* masih error
-                if (groupName != "")
+                int contactId = contactProcess.SaveContact(this, loggedUserName, contact);
+
+                string[] listGroup = listGroupName.Split(';');
+
+                foreach (string groupName in listGroup)
                 {
-                    
-                    Group group = contactProcess.IsGroupExist
-                    if (contactProcess.IsGroupExist(this, loggedUserName, groupName))
+                    if (groupName != "")
                     {
-                        
-                        contactProcess.AddContactToGroup(this, groupUser.Group);
-                    }
-                    else
-                    {
-                        Group newGroup = new Group { GroupName = groupName };
-                        contactProcess.SaveGroup(this, loggedUserName, newGroup);
-                        contactProcess.AddContactToGroup(this, newContact, newGroup);
+                        GroupUser groupUser = contactProcess.IsGroupExist(this, loggedUserName, groupName);
+                        if (groupUser != null)
+                        {
+                            contactProcess.AddContactToGroup(this, contact, groupUser.Group);
+                        }
+                        else
+                        {
+                            Group newGroup = new Group { GroupName = groupName };
+                            contactProcess.SaveGroup(this, loggedUserName, newGroup);
+                            GroupContact groupContact = contactProcess.AddContactToGroup(this, contact, newGroup);
+                        }
                     }
                 }
-                 */
-
-                sukses = true;
 
                 if (!Request.IsAjaxRequest())
                 {
-                    return Redirect("~/Contact?sukses=1");
+                    return Redirect("~/Contact?success=1");
+                }
+                else
+                {
+                    return Json(true);
                 }
 
             }
-
-            if (Request.IsAjaxRequest())
+            else
             {
-                return Json(sukses);
+                if (!Request.IsAjaxRequest())
+                {
+                    return Redirect("~/Contact?success=0");
+                }
+                else
+                {
+                    return Json(false);
+                }
             }
-
-            return View();
         }
 
         public ActionResult CreateGroup()
@@ -157,14 +164,75 @@ namespace PublicWebSms.Controllers
                 }
             }
 
-
-            return View();
         }
 
         public ActionResult ShowContact(int contactId = -1)
         {
-            return Redirect("~/Message/Compose");
-            //return View();
+            string loggedUserName = UserSession.GetLoggedUserName();
+
+            if (contactId > 0)
+            {
+                ContactUser contactUser = contactProcess.IsContactExist(this, loggedUserName, contactId);
+
+                if (contactUser != null)
+                {
+                    Contact contact = contactProcess.GetContact(this, loggedUserName, contactId);
+
+                    List<Group> listGroup = contactProcess.GetListGroup(this, loggedUserName, contactId);
+
+                    List<ContactList> listContactList = new List<ContactList>();
+
+                    ContactList contactList = new ContactList();
+
+                    contactList.ContactId = contactId;
+                    contactList.Nama = contact.Nama;
+                    contactList.Nomor = contact.Nomor;
+                    contactList.ListGroup = listGroup;
+
+                    listContactList.Add(contactList);
+
+                    return View(listContactList);
+                }
+                else
+                {
+                    return Redirect("~/Contact");
+                }
+            }
+            return Redirect("~/Contact");
+        }
+
+        public ActionResult Update(Contact contact, string listGroupName = "", int contactId = -1)
+        {
+            string loggedUserName = UserSession.GetLoggedUserName();
+            if (contactId > 0)
+            {
+                contactProcess.SaveContact(this, loggedUserName, contact);
+
+                string[] listGroup = listGroupName.Split(';');
+
+                foreach (string groupName in listGroup)
+                {
+                    if (groupName != "")
+                    {
+
+                        GroupUser groupUser = contactProcess.IsGroupExist(this, loggedUserName, groupName);
+                        if (groupUser != null)
+                        {
+                            contactProcess.AddContactToGroup(this, contact, groupUser.Group);
+                        }
+                        else
+                        {
+                            Group newGroup = new Group { GroupName = groupName };
+                            contactProcess.SaveGroup(this, loggedUserName, newGroup);
+                            GroupContact groupContact = contactProcess.AddContactToGroup(this, contact, newGroup);
+                        }
+
+                        return Redirect("~/Contact?updateSuccess=1");
+                    }
+                }
+            }
+
+            return Redirect("~/Contact");
         }
 
         public ActionResult ShowGroup(int groupId = -1)

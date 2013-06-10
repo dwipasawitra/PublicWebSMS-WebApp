@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PublicWebSms.Models.ContactList>
+
+@{
+    ViewBag.Title = "Informasi Kontak";
+}
+
+@foreach (PublicWebSms.Models.ContactList contactList in Model)
+{
+<form id="createcontactform" method="post" action="@Url.Content("~/Contact/Update")">
+    <div class="row">
+        <div class="span5">
+            <div class="input-control text">
+                <input type="text" name="Nama" id="Nama" placeholder="Nama" value="@contactList.Nama"/>
+                <button class="btn-clear"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span5">
+            <div class="input-control text">
+                <input type="text" name="Nomor" id="Nomor" placeholder="Nomor" value="@contactList.Nomor"/>
+                <button class="btn-clear"></button>
+            </div>
+        </div>
+    </div>
+
+    @foreach (PublicWebSms.Models.Group group in contactList.ListGroup)
+    {
+        ViewBag.GroupName += group.GroupName + ";";
+    }
+    <div class="row">
+        <div class="span5">
+            <div class="input-control text">
+                <input type="text" name="listGroupName" id="listGroupName" placeholder="Grup (boleh kosong)" value="@ViewBag.GroupName"/>
+                <button class="btn-clear"></button>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="row">
+        <input type="hidden" name="contactId" value="@contactList.ContactId"/>
+        <button type="submit" class="image-button bg-color-darken fg-color-white submit">Perbarui Kontak<i class="icon-upload bg-color-blue fg-color-white"></i></button>
+    </div>
+</form>
+}

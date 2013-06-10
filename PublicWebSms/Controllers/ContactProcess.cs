@@ -10,32 +10,70 @@ namespace PublicWebSms.Controllers
     public class ContactProcess
     {
         private PwsDbContext db = new PwsDbContext();
-        public int SaveContact(Controller controller, Contact contact)
+        public int SaveContact(Controller controller, string userName, Contact contact)
         {
-            db.Contacts.Add(contact);
-            db.SaveChanges();
+            ContactUser contactUser = IsContactExist(controller, userName, contact.ContactId);
 
-            ContactUser contactUser = new ContactUser
+            if (contactUser == null)
             {
-                ContactId = contact.ContactId,
-                UserName = UserSession.GetLoggedUserName()
-            };
+                db.Contacts.Add(contact);
+                db.SaveChanges();
 
-            db.ContactUser.Add(contactUser);
-            db.SaveChanges();
+                contactUser = new ContactUser
+                {
+                    ContactId = contact.ContactId,
+                    UserName = UserSession.GetLoggedUserName()
+                };
+
+                db.ContactUser.Add(contactUser);
+                db.SaveChanges();
+            }
+            else
+            {
+                db.SaveChanges();
+            }
 
             return contact.ContactId;
         }
 
         public GroupUser IsGroupExist(Controller controller, string userName, string groupName)
         {
-            GroupUser groupUser = db.GroupUser.SingleOrDefault(
-                dataGroup => dataGroup.Group.GroupName == groupName
-                            && dataGroup.UserName == userName
-            );
+            List<GroupUser> listGroupUser = (
+                from groupUsers in db.GroupUser
+                where
+                    groupUsers.UserName == userName && groupUsers.Group.GroupName == groupName
+                select groupUsers
+            ).ToList();
+            
+            GroupUser groupUser = null;
 
-            if (groupUser != null) return groupUser;
-            return null;
+            if (listGroupUser.Count() > 0)
+            {
+                groupUser = listGroupUser.First();
+            }
+            
+
+            return groupUser;
+        }
+
+        public ContactUser IsContactExist(Controller controller, string userName, int contactId)
+        {
+            List<ContactUser> listGroupUser = (
+                from contactUsers in db.ContactUser
+                where
+                    contactUsers.UserName == userName && contactUsers.ContactId == contactId
+                select contactUsers
+            ).ToList();
+
+            ContactUser contactUser = null;
+
+            if (listGroupUser.Count() > 0)
+            {
+                contactUser = listGroupUser.First();
+            }
+
+
+            return contactUser;
         }
 
         public GroupContact AddContactToGroup(Controller controller, Contact contact, Group group)
@@ -85,22 +123,51 @@ namespace PublicWebSms.Controllers
             Group group = null;
             GroupUser groupUser = null;
 
-            groupUser = db.GroupUser.SingleOrDefault(x => x.GroupId == groupId && x.UserName == userName);
+            groupUser = (
+                from groupUsers in db.GroupUser
+                where
+                    groupUsers.GroupId == groupId && groupUsers.UserName == userName
+                select groupUsers
+            ).ToList().First();
+
             group = groupUser.Group;
 
             return group;
         }
 
+        public Contact GetContact(Controller controller, string userName, int contactId)
+        {
+            Contact contact = null;
+            ContactUser contactUser = null;
+
+            contactUser = (
+                from contactUsers in db.ContactUser
+                where
+                    contactUsers.ContactId == contactId && contactUsers.UserName == userName
+                select contactUsers
+            ).ToList().First();
+
+            contact = contactUser.Contact;
+
+            return contact;
+        }
+
         public List<Group> GetListGroup(Controller controller, string userName, int contactId)
         {
-            List<Group> listGroup = null;
-
-            listGroup = (
-                from groupUser in db.GroupUser
-                where groupUser.UserName == userName
-                join groupContact in db.GroupsContact on groupUser.GroupId
-                equals groupContact.GroupId
-                select groupUser.Group
+            List<Group> listGroup = (
+                from
+                    groupContacts in db.GroupsContact
+                join
+                    groups in db.Groups on groupContacts.GroupId equals groups.GroupId
+                join
+                    groupUsers in db.GroupUser on groups.GroupId equals groupUsers.GroupId
+                join
+                    contacts in db.Contacts on groupContacts.ContactId equals contacts.ContactId
+                join
+                    contactUsers in db.ContactUser on contacts.ContactId equals contactUsers.ContactId
+                where
+                    contactUsers.UserName == userName && contacts.ContactId == contactId
+                select groups
             ).ToList();
 
             return listGroup;
@@ -124,12 +191,15 @@ namespace PublicWebSms.Controllers
             List<Contact> listContact = null;
 
             listContact = (
-                from groupContact in db.GroupsContact 
-                join groupUser in db.GroupUser on groupContact.GroupId 
-                equals groupUser.GroupId
-                where groupUser.UserName == userName 
-                    && groupUser.GroupId == groupId 
-                select groupContact.Contact
+                from
+                    contacts in db.Contacts
+                join
+                    contacUsers in db.ContactUser on contacts.ContactId equals contacUsers.ContactId
+                join
+                    groupContacts in db.GroupsContact on contacts.ContactId equals groupContacts.ContactId
+                where
+                    contacUsers.UserName == userName && groupContacts.GroupId == groupId
+                select contacts
             ).ToList();
 
             return listContact;
