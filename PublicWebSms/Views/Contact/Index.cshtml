@@ -9,6 +9,12 @@
     </a>
 </div>
 <br />
+@if (Request.Form["updateSuccess"] == "1")
+{
+<div class="row">
+    <div class="label success padding5">Pembaruan kontak berhasil!</div>
+</div>
+}
 <div class="row">
     <button class="image-button bg-color-darken fg-color-white submit" id="btn-select-all"><i class="icon-checkmark bg-color-yellow fg-color-white"></i>Pilih</button>
     <button class="image-button bg-color-darken fg-color-white submit" id="btn-clear-all"><i class="icon-cancel-2 bg-color-yellow fg-color-white"></i>Lepas</button>
@@ -47,7 +53,7 @@
                     </div>
                 </td>
 			    <td data-contact-id="@contactList.ContactId" class="contact-button">
-                    <a href="">Sunting</a> | <a href="">Kirim SMS</a> | <a href="">Hapus</a>
+                    <a href="@Url.Content("~/Contact/ShowContact?contactId=" + contactList.ContactId)">Sunting</a> | <a href="">Kirim SMS</a> | <a href="">Hapus</a>
                 @if (ViewBag.PartialView) 
                 { 
                     <input type="submit" value="Keluarkan" class="submit" title="Keluarkan kontak dari grup"/>
