@@ -116,6 +116,24 @@ namespace PublicWebSms.Controllers
             return View();
         }
 
+        [PwsAuthorize]
+        [HttpPost]
+        public ActionResult Manage(ManageAccountModel manageAccountModel)
+        {
+            if (ModelState.IsValid)
+            {
+                string loggedUserName = UserSession.GetLoggedUserName();
+                var user = db.Users.SingleOrDefault(x => x.LoginName == loggedUserName);
+                if (manageAccountModel.OldPassword == user.LoginPassword)
+                {
+                    user.LoginPassword = manageAccountModel.Password;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Dashboard");
+                }
+            }
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
  	         base.Dispose(disposing);

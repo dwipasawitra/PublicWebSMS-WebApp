@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace PublicWebSms.Controllers
 {
     [PwsAdminAuthorize]
-    public class AdminController : Controller
+    public class AdminController : MyController
     {
 
         private PwsDbContext db = new PwsDbContext();

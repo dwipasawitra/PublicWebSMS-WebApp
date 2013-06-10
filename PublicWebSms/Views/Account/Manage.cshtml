@@ -1,0 +1,42 @@
+﻿@model PublicWebSms.Models.ManageAccountModel
+
+@{
+    ViewBag.Title = "Ganti Password";
+}
+
+<h2>Manage</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+      
+        <div class="editor-label">
+            Password Lama
+        </div>
+        <div class="editor-field">
+            @Html.PasswordFor(model => model.OldPassword)
+            @Html.ValidationMessageFor(model => model.OldPassword)
+        </div>
+
+        <div class="editor-label">
+            Password Baru
+        </div>
+        <div class="editor-field">
+            @Html.PasswordFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.Password)
+        </div>
+
+        <div class="editor-label">
+            Ulangi Password Baru
+        </div>
+        <div class="editor-field">
+            @Html.PasswordFor(model => model.ConfirmPassword)
+            @Html.ValidationMessageFor(model => model.ConfirmPassword)
+        </div>
+
+        <p>
+            <input type="submit" value="Ubah Password" />
+        </p>
+
+}
+
